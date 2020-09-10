@@ -1,0 +1,233 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #cdcdcd;
+}
+
+input {
+  border: none;
+  outline: none;
+}
+
+select {
+  border: none;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+li {
+  list-style: none;
+}
+.clearfix::after {
+  content: '';
+  display: block;
+  height: 0px;
+  clear: both;
+}
+
+/* ----------------------------------------------------------------------- */
+/* 公共类名 */
+
+/* ----------------------------------------------------------------------- */
+/* 顶部标签栏 */
+#header {
+  width: 100%;
+  height: 60px;
+  background-color: #333;
+  line-height: 60px;
+}
+.inner {
+  margin: 0 auto;
+  width: 600px;
+  height: 100%;
+  font-size: 0;
+}
+#header h1 {
+  float: left;
+  color: #fff;
+  font-size: 30px;
+}
+
+#header input {
+  float: right;
+  height: 30px;
+  margin-top: 15px;
+  width: 400px;
+  border-radius: 5px;
+  padding-left: 10px;
+  box-sizing: border-box;
+}
+/* ----------------------------------------------------------------------- */
+/* 模式切换 */
+.switch-mode {
+  width: 50%;
+  height: 30px;
+  background-color: #333;
+  color: #fff;
+  font-size: 20px;
+}
+.switch-mode:active {
+  background-color: #000;
+}
+.current-mode {
+  background-color: #cdcdcd;
+  color: #000;
+}
+.current-mode:active {
+  background-color: #cdcdcd;
+}
+/* ----------------------------------------------------------------------- */
+/* 中间展示区 */
+#content .group {
+  width: 600px;
+  margin: 0 auto;
+}
+#content .group .title {
+  margin: 20px 0;
+  height: 30px;
+}
+#content .group .title h2 {
+  display: block;
+  float: left;
+}
+#content .group .title .toolbar {
+  position: relative;
+  float: right;
+}
+.iconfont {
+  position: absolute;
+  /* left: -30px; */
+  right: 0px;
+  top: 2px;
+}
+.drop-down,
+.drop-up {
+  font-size: 30px;
+}
+.circle {
+  display: block;
+  min-width: 80px;
+  margin-right: 40px;
+  padding: 0 10px;
+  height: 30px;
+  border-radius: 15px;
+  /* background-color: #e6e6fa; */
+  border: #333 solid 2px;
+  color: #000;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: center;
+  float: right;
+  user-select: none;
+}
+.circle:hover {
+  background-color: #333;
+  color: white;
+}
+
+/* ----------------------------------------------------------------------- */
+/* 任务条 */
+
+.item {
+  height: 40px;
+  line-height: 40px;
+  background-color: #fff;
+  border-radius: 5px;
+  vertical-align: middle;
+  margin: 10px 0;
+}
+
+.item .item-state {
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  margin-top: 5px;
+  float: left;
+}
+
+.item .item-input {
+  display: block;
+  font-size: 24px;
+  margin-left: 10px;
+  margin-top: 5px;
+  line-height: 40px;
+  height: 30px;
+  width: 250px;
+  box-sizing: border-box;
+  background-color: transparent;
+  float: left;
+}
+.item .item-input:focus {
+  border: 1px solid black;
+}
+
+.item .select {
+  position: relative;
+  width: 100px;
+  height: 30px;
+  margin: 4px 50px;
+  border: 1px solid black;
+  float: right;
+  border-radius: 5px;
+}
+.item .select::after {
+  position: absolute;
+  content: '';
+  width: 20px;
+  height: 20px;
+  display: block;
+  top: 5px;
+  right: 5px;
+  background: url('../img/drop-down.png') no-repeat center;
+  background-size: 100% 100%;
+}
+.select select {
+  display: block;
+  font-size: 20px;
+  padding-left: 5px;
+  height: 30px;
+  line-height: 30px;
+  width: 100%;
+  border-radius: 5px;
+}
+.del-btn {
+  float: right;
+  margin-right: 20px;
+  font-size: 30px;
+  user-select: none;
+}
+
+.done-item {
+  background-color: #dddddd;
+}
+/* ----------------------------------------------------------------------- */
+/* 增加分组按钮 */
+
+.add-group {
+  font-size: 20px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+}
+.add-group:active {
+  background-color: #000;
+}
+/* ----------------------------------------------------------------------- */
+/* 清空按钮 */
+.clear {
+  margin-top: 10px;
+  font-size: 20px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+}
+.clear:active {
+  background-color: #000;
+}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./icon/iconfont.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+  </head>
+  <body >
+    <div id="header">
+      <div class="inner">
+        <h1>TodoList</h1>
+        <input type="text" id="add-todo" placeholder="添加Todo" />
+      </div>
+    </div>
+    <div class="inner">
+      <input type="button" class="switch-mode" mode="0" value="完成状态分组" />
+      <input type="button" class="switch-mode" mode="1" value="自定义分组" />
+    </div>
+    <div id="content">
+      <!-- <div class="group clearfix">
+        <div class="title clearfix">
+          <h2>分组1</h2>
+          <div class="toolbar clearfix">
+            <span class="iconfont drop-down"></span>
+            <span class="circle percent" style="display: none">50%</span>
+            <span class="circle del-group">删除分组</span>
+          </div>
+        </div>
+        <div class="list">
+          <ul>
+            <li class="done-item item">
+              <input type="checkbox" class="item-state" checked />
+              <input type="text" class="item-input" value="aaaaaaaaaaaaaa" />
+              <span class="del-btn">X</span>
+              <div class="select">
+                <select>
+                  <option value="0" selected>分组1</option>
+                  <option value="1">分组2</option>
+                  <option value="2">分组3</option>
+                  <option value="3">分组4</option>
+                </select>
+              </div>
+            </li>
+            <li class="todo-item item">
+              <input type="checkbox" class="item-state" />
+              <input type="text" class="item-input" value="aaaaaaaaaaaaaa" />
+              <span class="del-btn">X</span>
+              <div class="select">
+                <select>
+                  <option value="0">分组1</option>
+                  <option value="1" selected>分组2</option>
+                  <option value="2">分组3</option>
+                  <option value="3">分组4</option>
+                </select>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="group clearfix">
+        <div class="title clearfix">
+          <h2>分组2</h2>
+          <div class="toolbar clearfix">
+            <span class="iconfont drop-down"></span>
+            <span class="circle percent">33%</span>
+            <span class="circle del-group" style="display: none">删除</span>
+          </div>
+        </div>
+        <div class="list">
+          <ul>
+            <li class="done-item item">
+              <input type="checkbox" class="item-state" checked />
+              <input type="text" class="item-input" value="aaaaaaaaaaaaaa" />
+              <span class="del-btn">X</span>
+              <div class="select">
+                <select>
+                  <option value="0">分组1</option>
+                  <option value="1" selected>分组2</option>
+                  <option value="2">分组3</option>
+                  <option value="3">分组4</option>
+                </select>
+              </div>
+            </li>
+            <li class="todo-item item">
+              <input type="checkbox" class="item-state" />
+              <input type="text" class="item-input" value="aaaaaaaaaaaaaa" />
+              <span class="del-btn">X</span>
+              <div class="select">
+                <select>
+                  <option value="0">分组1</option>
+                  <option value="1" selected>分组2</option>
+                  <option value="2">分组3</option>
+                  <option value="3">分组4</option>
+                </select>
+              </div>
+            </li>
+            <li class="todo-item item">
+              <input type="checkbox" class="item-state" />
+              <input type="text" class="item-input" value="aaaaaaaaaaaaaa" />
+              <span class="del-btn">X</span>
+              <div class="select">
+                <select>
+                  <option value="0">分组1</option>
+                  <option value="1" selected>分组2</option>
+                  <option value="2">分组3</option>
+                  <option value="3">分组4</option>
+                </select>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="group clearfix">
+        <div class="title clearfix">
+          <h2>未分组</h2>
+          <div class="toolbar clearfix">
+            <span class="iconfont drop-down"></span>
+            <span class="circle percent">0%</span>
+            <span class="circle del-group" style="display: none">删除</span>
+          </div>
+        </div>
+        <div class="list">
+          <ul>
+            <li class="todo-item item">
+              <input type="checkbox" class="item-state" />
+              <input type="text" class="item-input" value="aaaaaaaaaaaaaa" />
+              <span class="del-btn">X</span>
+              <div class="select">
+                <select>
+                  <option value="">未分组</option>
+                  <option value="0">分组1</option>
+                  <option value="1">分组2</option>
+                  <option value="2">分组3</option>
+                  <option value="3">分组4</option>
+                </select>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div> -->
+    </div>
+    <div class="inner">
+      <input type="button" class="add-group inner" value="新增分组" />
+    </div>
+    <div class="inner">
+      <input type="button" class="clear inner" value="清空" />
+    </div>
+  </body>
+</html>
+<script src="./js/VNode.js"></script>
+<script src="./js/EventBinder.js"></script>
+<script src="./js/main.js"></script>
