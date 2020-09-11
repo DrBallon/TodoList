@@ -1,0 +1,315 @@
+/*
+  字体大小记录
+  h1 30px
+  h2 24px
+  切换模式按钮 20px
+*/
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow: hidden;
+  font-size: 12px;
+  height: 100%;
+}
+body {
+  background-color: #cdcdcd;
+  position: relative;
+  height: 100%;
+}
+
+input {
+  border: none;
+  outline: none;
+}
+
+select {
+  border: none;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+li {
+  list-style: none;
+}
+.clearfix::after {
+  content: '';
+  display: block;
+  height: 0px;
+  clear: both;
+}
+
+/* ----------------------------------------------------------------------- */
+/* 顶部标签栏 */
+#header {
+  width: 100%;
+  height: 5rem;
+
+  background-color: #333;
+  line-height: 60px;
+}
+.depth {
+  margin: 0 auto;
+  width: 600px;
+  font-size: 0;
+}
+
+#header h1 {
+  font-size: 2.5rem;
+  margin-left: 0.5rem;
+
+  float: left;
+  color: #fff;
+  user-select: none;
+}
+#header input {
+  float: right;
+  width: 50%;
+  height: 3rem;
+  margin-top: 1rem;
+  margin-right: 0.5rem;
+  font-size: 2rem;
+
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  box-sizing: border-box;
+}
+/* ----------------------------------------------------------------------- */
+/* 模式切换 */
+.switch-mode {
+  width: 50%;
+  /* height: 30px; */
+  height: 4rem;
+  background-color: #333;
+  color: #fff;
+  font-size: 2rem;
+}
+.switch-mode:active {
+  background-color: #000;
+}
+.current-mode {
+  background-color: #cdcdcd;
+  color: #000;
+}
+.current-mode:active {
+  background-color: #cdcdcd;
+}
+/* ----------------------------------------------------------------------- */
+/* 中间展示区 */
+.inner {
+  position: absolute;
+  width: 600px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#content {
+  position: relative;
+  overflow: hidden;
+}
+#content .group {
+  width: 600px;
+  /* width: 100%; */
+  margin: 0 auto;
+}
+#content .group .title {
+  /* margin: 1rem 0; */
+  height: 5rem;
+  user-select: none;
+}
+#content .group .title h2 {
+  /* padding-top: 1rem; */
+  margin-top: 1rem;
+  line-height: 3rem;
+  font-size: 2rem;
+  display: block;
+  float: left;
+}
+#content .group .title .toolbar {
+  position: relative;
+  float: right;
+}
+.iconfont {
+  position: absolute;
+  /* left: -30px; */
+  /* right: 0px; */
+  /* top: 2px; */
+  top: 0.35rem;
+  right: 0.5rem;
+}
+.drop-down,
+.drop-up {
+  font-size: 4rem;
+}
+.circle {
+  display: block;
+  /* min-width: 80px; */
+  /* margin-right: 40px; */
+  /* padding: 0 10px; */
+  /* line-height: 30px; */
+  /* height: 30px; */
+  /* font-size: 20px; */
+  /* background-color: #e6e6fa; */
+  min-width: 6rem;
+  margin-right: 5rem;
+  height: 3rem;
+  margin-top: 1rem;
+  line-height: 2.6rem;
+  font-size: 2rem;
+  padding: 0 1rem;
+  border-radius: 2rem;
+
+  border: #333 solid 0.2rem;
+  box-sizing: border-box;
+  color: #000;
+  text-align: center;
+  float: right;
+  user-select: none;
+}
+.circle:hover {
+  background-color: #333;
+  color: white;
+}
+
+/* ----------------------------------------------------------------------- */
+/* 任务条 */
+
+.item {
+  /* height: 40px; */
+  /* line-height: 40px; */
+
+  height: 3rem;
+  line-height: 3rem;
+
+  background-color: #fff;
+  border-radius: 5px;
+  vertical-align: middle;
+  margin: 1rem 0;
+  user-select: none;
+}
+.done-item {
+  background-color: #dddddd;
+}
+.item .item-state {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-left: 1rem;
+  margin-top: 0.25rem;
+  float: left;
+}
+
+.item .item-input {
+  display: block;
+  font-size: 2rem;
+  line-height: 3rem;
+  margin-left: 1rem;
+  height: 3rem;
+  width: 10rem;
+  box-sizing: border-box;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  float: left;
+}
+.item .item-input:focus {
+  border: 1px solid black;
+}
+
+.item .select {
+  position: relative;
+  width: 7rem;
+  /* height: 30px; */
+  height: 2rem;
+  margin: 0.5rem 0.5rem;
+  border: 0.1rem solid black;
+  float: right;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.item .select::after {
+  position: absolute;
+  content: '';
+  width: 1.8rem;
+  height: 1.8rem;
+  display: block;
+  top: 0rem;
+  right: 0.5rem;
+  background: url('../img/drop-down.png') no-repeat center;
+  background-size: 100% 100%;
+}
+.select select {
+  display: block;
+  font-size: 1.5rem;
+  padding-left: 5px;
+  height: 1.8rem;
+  line-height: 1.8rem;
+  width: 100%;
+  border-radius: 0.5rem;
+}
+.select select {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.del-btn {
+  float: right;
+  margin-right: 1rem;
+  font-size: 3rem;
+  user-select: none;
+}
+
+/* ----------------------------------------------------------------------- */
+/* 分组按钮 */
+/* 清空按钮 */
+
+.add-group,
+.clear {
+  font-size: 2rem;
+  height: 4rem;
+  border-radius: 0.5rem;
+  background-color: #333;
+  color: #fff;
+}
+.add-group:active,
+.clear:active {
+  background-color: #000;
+}
+.full-btn {
+  width: 100%;
+}
+.half-btn {
+  width: 48%;
+}
+.half-btn:nth-child(1) {
+  margin-right: 2%;
+}
+
+.footer {
+  position: absolute;
+  left: 50%;
+  bottom: 0rem;
+  transform: translateX(-50%);
+}
+/* ----------------------------------------------------------------------- */
+/* 手机端 */
+
+@media only screen and (max-width: 600px) {
+  .depth {
+    width: 100%;
+  }
+  #content .group {
+    width: 100%;
+  }
+  .footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0rem;
+  }
+  .inner {
+    position: absolute;
+    width: 100%;
+  }
+}
