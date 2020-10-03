@@ -5,7 +5,6 @@ import state from './state';
 import mutations from './mutations';
 import getters from './getters';
 import { ChangeGroup, EditContent } from './IFs';
-import { CHANGE_GROUP, EDIT_CONTENT } from './mutation_types';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({

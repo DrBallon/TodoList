@@ -1,9 +1,11 @@
+import { User } from './../models/User';
 import { NextFunction } from 'express';
 import { Request, Response } from 'express';
 import { Group } from '../models/Group';
+const USER_ID = 0;
 export const addGroup = (req: Request, res: Response, next: NextFunction) => {
-  let title = req.body.data.title;
-  let group = new Group({ title, _id: 0 });
+  let title = req.body.title;
+  let group = new Group({ title, _id: 0, user_id: 0 });
   let retData = {
     status: 200,
     msg: '',
@@ -30,8 +32,8 @@ export const delGroup = (req: Request, res: Response, next: NextFunction) => {
     msg: '完成',
     data: {},
   };
-  let groupId: number = req.body.data.groupId;
-  Group.remove({ _id: groupId }, (err) => {
+  let id: number = req.body.id;
+  Group.remove({ _id: id }, (err) => {
     if (err) {
       retData.status = 500;
       retData.msg = 'failed';

@@ -22,6 +22,10 @@ export interface EditContent {
   itemId: number;
   newContent: string;
 }
+export interface ChangeState {
+  itemId: number;
+  newState: boolean;
+}
 //getters
 export interface List {
   id: number;

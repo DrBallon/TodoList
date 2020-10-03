@@ -1,27 +1,36 @@
 import Mock from 'mockjs';
 const ItemTemp = {
-  'id|12': 'x',
-  'done|1-2': true,
+  'id|0-100': 0,
+  'done|1-1': true,
   'content|5-10': '',
   'group|0-1': 0,
 };
 const GroupTemp = {
-  'id|12': 'x',
+  'id|0-100': 0,
   'title|5-10': '',
 };
-Mock.mock('http://localhost:3000/data/get', 'get', {
+Mock.mock(/^[http://localhost:3000/data]/, 'get', {
   status: 200,
   msg: 'success',
   data: Mock.mock({
     'curMode|0-1': 0,
-    'groups|1-5': [GroupTemp],
+    groups: [
+      {
+        id: 0,
+        title: '正在进行',
+      },
+      {
+        id: 1,
+        title: '已完成',
+      },
+    ],
     'list|1-10': [ItemTemp],
   }),
 });
 /*
     additem
 */
-Mock.mock('http://localhost:3000/item/add', 'post', {
+Mock.mock(/^[http://localhost:3000/item/add]/, 'post', {
   status: 200,
   msg: 'success',
   data: Mock.mock(ItemTemp),
@@ -29,7 +38,7 @@ Mock.mock('http://localhost:3000/item/add', 'post', {
 /*
     delitem
 */
-Mock.mock('http://localhost:3000/item/dele', 'post', {
+Mock.mock(/^[http://localhost:3000/item/dele]/, 'post', {
   status: 200,
   msg: 'success',
   data: Mock.mock(ItemTemp),
@@ -37,7 +46,7 @@ Mock.mock('http://localhost:3000/item/dele', 'post', {
 /*
     setMode
 */
-Mock.mock('http://localhost:3000/mode/set', 'post', {
+Mock.mock(/^[http://localhost:3000/mode/set]/, 'post', {
   status: 200,
   msg: 'success',
   data: Mock.mock({}),
@@ -45,7 +54,15 @@ Mock.mock('http://localhost:3000/mode/set', 'post', {
 /*
     changeState
 */
-Mock.mock('http://localhost:3000/item/state', 'post', {
+Mock.mock(/^[http://localhost:3000/item/state]/, 'post', {
+  status: 200,
+  msg: 'success',
+  data: {},
+});
+/*
+    changeState
+*/
+Mock.mock(/^[http://localhost:3000/item/content]/, 'post', {
   status: 200,
   msg: 'success',
   data: {},
@@ -53,7 +70,7 @@ Mock.mock('http://localhost:3000/item/state', 'post', {
 /*
     changeGroup
 */
-Mock.mock('http://localhost:3000/item/group', 'post', {
+Mock.mock(/^[http://localhost:3000/item/group]/, 'post', {
   status: 200,
   msg: 'success',
   data: {},
@@ -61,7 +78,7 @@ Mock.mock('http://localhost:3000/item/group', 'post', {
 /*
     addGroup
 */
-Mock.mock('http://localhost:3000/group/add', 'post', {
+Mock.mock(/^[http://localhost:3000/group/add]/, 'post', {
   status: 200,
   msg: 'success',
   data: {},
@@ -69,7 +86,7 @@ Mock.mock('http://localhost:3000/group/add', 'post', {
 /*
     delGrop
 */
-Mock.mock('http://localhost:3000/group/del', 'post', {
+Mock.mock(/^[http://localhost:3000/group/del]/, 'post', {
   status: 200,
   msg: 'success',
   data: {},

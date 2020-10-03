@@ -1,23 +1,25 @@
 <template>
   <div class="tools center">
-    <input type="button" class="clear center " :class="{ 'half-btn': curMode == 1 }" value="清空" />
+    <input type="button" class="clear center " :class="{ 'half-btn': curMode == 1 }" value="清空" @click="clear" />
     <input type="button" class="add-group center half-btn" v-if="curMode == 1" value="新增分组" @click="add" />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { mapActions } from 'vuex';
 @Component({
   name: 'Tools',
 })
 export default class Tools extends Vue {
   add() {
-    let title = prompt('新分组标题', '');
+    const title = prompt('新分组标题', '');
     if (title != '') {
       // console.log(title);
       this.$store.dispatch('addGroup', title);
     }
+  }
+  clear() {
+    this.$store.dispatch('clearItem');
   }
   get curMode() {
     return this.$store.getters.getCurMode || 0;

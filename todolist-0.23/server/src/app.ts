@@ -25,16 +25,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //设置允许跨域访问该服务.
-app.all('*', function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header('Access-Control-Allow-Methods', '*');
-  res.header('Content-Type', 'application/json;charset=utf-8');
+app.all('', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type');
+  res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
   next();
 });
 app.use((req, res, next) => {
-  // console.log(`${req.method}-${req.body.data}`);
   console.log('[method]:', req.method, ',body:', req.body.data);
   next();
 });
@@ -48,16 +45,16 @@ app.post('/item/del', Item.delItem);
 app.post('/item/content', Item.editContent);
 app.post('/item/state', Item.changeState);
 app.post('/item/group', Item.changGroup);
+app.post('/item/clear', Item.clearItem);
 
 app.post('/mode/set', async (req, res, next) => {
-  let userId: string = req.body.data.userId;
-  let newMode: number = req.body.data.newMode;
+  let newMode: number = req.body.newMode;
   let retData = {
     status: 200,
     msg: '',
     data: {},
   };
-  User.findByIdAndUpdate(userId, { mode: newMode }).exec((err) => {
+  User.findByIdAndUpdate(0, { curMode: newMode }).exec((err) => {
     if (err) {
       retData.status = 500;
       retData.msg = '没有找到用户';
@@ -67,7 +64,7 @@ app.post('/mode/set', async (req, res, next) => {
   });
 });
 app.use((err) => {
-  console.log('[error]:', err);
+  // console.log('[error]:', err);
 });
 app.listen(3000, () => {
   console.log('服务器开始');

@@ -53,7 +53,7 @@ export default class Item extends ItemProps {
     });
   }
   state() {
-    this.$store.dispatch('changeState', this.data.id);
+    this.$store.dispatch('changeState', { itemId: this.data.id, newState: !this.data.done });
   }
   del() {
     this.$store.dispatch('delItem', this.data.id);

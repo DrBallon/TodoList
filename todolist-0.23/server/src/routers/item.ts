@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { Item, ItemInterface } from '../models/Item';
-
+const USER_ID = 0;
 export const changeState = (req: Request, res: Response, next: NextFunction) => {
-  let { id, done } = req.body.data;
+  let { id, done } = req.body;
+  console.log('body:', req.body);
+  console.log(id, done);
   const retData = {
     status: 200,
     msg: '成功',
@@ -18,7 +20,7 @@ export const changeState = (req: Request, res: Response, next: NextFunction) => 
   });
 };
 export const changGroup = (req: Request, res: Response, next: NextFunction) => {
-  let { id, group } = req.body.data;
+  let { id, group } = req.body;
   const retData = {
     status: 200,
     msg: '成功',
@@ -34,7 +36,7 @@ export const changGroup = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 export const editContent = (req: Request, res: Response, next: NextFunction) => {
-  let { id, content } = req.body.data;
+  let { id, content } = req.body;
   const retData = {
     status: 200,
     msg: '成功',
@@ -49,8 +51,25 @@ export const editContent = (req: Request, res: Response, next: NextFunction) => 
     res.send(retData);
   });
 };
+
+export const clearItem = (req: Request, res: Response, next: NextFunction) => {
+  const retData = {
+    status: 200,
+    msg: '成功',
+    data: {},
+  };
+  console.log('clear');
+  Item.deleteMany({ user_id: USER_ID }, (err) => {
+    if (err) {
+      retData.status = 500;
+      retData.msg = '失败';
+      next(err);
+    }
+    res.send(retData);
+  });
+};
 export const delItem = (req: Request, res: Response, next: NextFunction) => {
-  let id = req.body.data.id;
+  let id = req.body.id;
   const retData = {
     status: 200,
     msg: '成功',
@@ -66,14 +85,14 @@ export const delItem = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 export const addItem = (req: Request, res: Response, next: NextFunction) => {
-  let { userId = 0, content } = req.body.data;
+  let { userId = 0, content } = req.body;
   // res.send('addItem');
   const obj: ItemInterface = {
     _id: 0,
     user_id: userId,
-    done: true,
+    done: false,
     content: content,
-    group: 0,
+    group: -1,
   };
   const item = new Item(obj);
   const retData = {

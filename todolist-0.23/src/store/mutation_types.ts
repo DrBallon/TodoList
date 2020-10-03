@@ -8,3 +8,7 @@ export const ADD_GROUP = 'ADD_GROUP';
 export const DEL_GROUP = 'DEL_GROUP';
 
 export const CHANGE_MODE = 'CHANGE_MODE';
+
+export const SET_DATA = 'SET_DATA';
+
+export const CLEAR_ITEM = 'CLEAR_ITEM';

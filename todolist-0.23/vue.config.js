@@ -2,7 +2,17 @@ const path = require('path');
 const resolve = (dir) => path.join(__dirname, dir);
 
 module.exports = {
-  devServer: {},
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '',
+        },
+      },
+    },
+  },
   chainWebpack: (config) => {
     // 设置快捷路径， @ 表示 'src' ，components 表示 'src/components'
     config.resolve.alias

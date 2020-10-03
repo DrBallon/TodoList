@@ -24,6 +24,9 @@ export default class App extends Vue {
     content: 0,
     done: false,
   };
+  created() {
+    this.$store.dispatch('setData');
+  }
 }
 </script>
 
