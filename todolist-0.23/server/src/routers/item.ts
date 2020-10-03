@@ -1,17 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { Item, ItemInterface } from '../models/Item';
-import { ObjectID } from 'mongodb';
-import mongoose from 'mongoose';
 
 export const changeState = (req: Request, res: Response, next: NextFunction) => {
-  let targetId = req.body.data.id;
-  let done = req.body.data.done;
+  let { id, done } = req.body.data;
   const retData = {
     status: 200,
     msg: '成功',
     data: {},
   };
-  Item.updateOne({ _id: mongoose.Types.ObjectId(targetId) }, { done }, (err) => {
+  Item.updateOne({ _id: id }, { done }, (err) => {
     if (err) {
       retData.status = 500;
       retData.msg = '失败';
@@ -21,14 +18,13 @@ export const changeState = (req: Request, res: Response, next: NextFunction) => 
   });
 };
 export const changGroup = (req: Request, res: Response, next: NextFunction) => {
-  let targetId = req.body.data.id;
-  let group = req.body.data.group;
+  let { id, group } = req.body.data;
   const retData = {
     status: 200,
     msg: '成功',
     data: {},
   };
-  Item.updateOne({ _id: mongoose.Types.ObjectId(targetId) }, { group }, (err) => {
+  Item.updateOne({ _id: id }, { group }, (err) => {
     if (err) {
       retData.status = 500;
       retData.msg = '失败';
@@ -38,14 +34,13 @@ export const changGroup = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 export const editContent = (req: Request, res: Response, next: NextFunction) => {
-  let targetId = req.body.data.id;
-  let content = req.body.data.content;
+  let { id, content } = req.body.data;
   const retData = {
     status: 200,
     msg: '成功',
     data: {},
   };
-  Item.updateOne({ _id: mongoose.Types.ObjectId(targetId) }, { content }, (err) => {
+  Item.updateOne({ _id: id }, { content }, (err) => {
     if (err) {
       retData.status = 500;
       retData.msg = '失败';
@@ -55,13 +50,13 @@ export const editContent = (req: Request, res: Response, next: NextFunction) => 
   });
 };
 export const delItem = (req: Request, res: Response, next: NextFunction) => {
-  let targetId = req.body.data.id;
+  let id = req.body.data.id;
   const retData = {
     status: 200,
     msg: '成功',
     data: {},
   };
-  Item.deleteOne({ _id: mongoose.Types.ObjectId(targetId) }, (err) => {
+  Item.deleteOne({ _id: id }, (err) => {
     if (err) {
       retData.status = 500;
       retData.msg = '失败';
@@ -71,13 +66,14 @@ export const delItem = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 export const addItem = (req: Request, res: Response, next: NextFunction) => {
+  let { userId = 0, content } = req.body.data;
   // res.send('addItem');
   const obj: ItemInterface = {
-    user_id: new ObjectID(),
+    _id: 0,
+    user_id: userId,
     done: true,
-    content: 'abc',
+    content: content,
     group: 0,
-    date: new Date(),
   };
   const item = new Item(obj);
   const retData = {
@@ -91,13 +87,12 @@ export const addItem = (req: Request, res: Response, next: NextFunction) => {
       retData.msg = '失败';
       next(err);
     }
-    let { _id, done, content, group, date } = resItem;
+    let { _id, done, content, group } = resItem;
     retData.data = {
       id: _id,
       done,
       content,
       group,
-      date,
     };
     res.send(retData);
   });

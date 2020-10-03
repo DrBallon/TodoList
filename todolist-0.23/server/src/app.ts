@@ -12,7 +12,7 @@ const app = express();
 // app.use(express.static(path.join(__dirname, 'public/css')));
 
 mongoose
-  .connect('mongodb://test:123456@localhost:27017/todolist')
+  .connect('mongodb://test:123456@localhost:27017/todolist', { useFindAndModify: false })
   .then(() => {
     console.log('数据库连接成功');
   })
@@ -24,8 +24,18 @@ mongoose
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+//设置允许跨域访问该服务.
+app.all('*', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Methods', '*');
+  res.header('Content-Type', 'application/json;charset=utf-8');
+  next();
+});
 app.use((req, res, next) => {
-  console.log(`${req.method}-${req.body}`);
+  // console.log(`${req.method}-${req.body.data}`);
+  console.log('[method]:', req.method, ',body:', req.body.data);
   next();
 });
 app.get('/data', Data.getData);

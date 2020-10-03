@@ -14,6 +14,7 @@ exports.addGroup = function (req, res, next) {
         msg: '',
         data: {}
     };
+    console.log(group.id);
     group.save(function (err, resGroup) {
         if (err) {
             next(err);

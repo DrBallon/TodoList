@@ -15,7 +15,7 @@ exports.changeState = function (req, res, next) {
         msg: '成功',
         data: {}
     };
-    Item_1.Item.updateOne({ _id: mongoose_1["default"].Types.ObjectId(targetId) }, { done: done }, function (err) {
+    Item_1.Item.updateOne({ _id: mongoose_1["default"].Types.ObjectId(targetId) }, { done: done }, function (err, resItem) {
         if (err) {
             retData.status = 500;
             retData.msg = '失败';

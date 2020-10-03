@@ -41,6 +41,7 @@ var mongodb_1 = require("mongodb");
 var User_1 = require("../models/User");
 var Item_1 = require("../models/Item");
 var Group_1 = require("../models/Group");
+// import mongoose from 'mongoose';
 var testUserId = new mongodb_1.ObjectID('5f7710672ae7c270cd646650');
 function getData(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -58,7 +59,9 @@ function getData(req, res) {
                             .exec()];
                 case 1:
                     items = _a.sent();
-                    return [4 /*yield*/, Group_1.Group.aggregate().project({ id: '$_id', title: 1, _id: 0 }).exec()];
+                    return [4 /*yield*/, Group_1.Group.aggregate()
+                            .project({ id: '$_id', title: 1, _id: 0 })
+                            .exec()];
                 case 2:
                     groups = _a.sent();
                     return [4 /*yield*/, User_1.User.findOne({ _id: testUserId }).exec()];

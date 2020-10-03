@@ -1,11 +1,9 @@
-import mongoose from 'mongoose';
 import { NextFunction } from 'express';
 import { Request, Response } from 'express';
-import { Group, GroupDocument } from '../models/Group';
-
+import { Group } from '../models/Group';
 export const addGroup = (req: Request, res: Response, next: NextFunction) => {
   let title = req.body.data.title;
-  let group = new Group({ title });
+  let group = new Group({ title, _id: 0 });
   let retData = {
     status: 200,
     msg: '',
@@ -17,23 +15,23 @@ export const addGroup = (req: Request, res: Response, next: NextFunction) => {
       retData.status = 500;
       retData.msg = '添加失败';
     }
-    let { _id, title } = resGroup;
+    // console.log('resGroup', resGroup);
+    let { _id: id, title } = resGroup;
     retData.data = {
-      id: _id,
+      id,
       title,
     };
     res.send(retData);
   });
 };
 export const delGroup = (req: Request, res: Response, next: NextFunction) => {
-  // res.send('delGroup');
   let retData = {
     status: 200,
     msg: '完成',
     data: {},
   };
-  let groupId: string = req.body.data.groupId;
-  Group.remove({ _id: mongoose.Types.ObjectId(groupId) }, (err) => {
+  let groupId: number = req.body.data.groupId;
+  Group.remove({ _id: groupId }, (err) => {
     if (err) {
       retData.status = 500;
       retData.msg = 'failed';

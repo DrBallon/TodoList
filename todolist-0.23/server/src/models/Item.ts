@@ -1,28 +1,31 @@
 import mongoose from 'mongoose';
-import { ObjectID } from 'mongodb';
-
+import { Counter } from './Counter';
 export type ItemInterface = {
-  user_id: ObjectID;
+  _id: number;
+  user_id: number;
   done: boolean;
   content: string;
   group: number;
-  date: Date;
 };
 
 export type ItemDocument = mongoose.Document & ItemInterface;
 
 const ItemSchema = new mongoose.Schema(
   {
-    //   id: { type: Number },
-    user_id: { type: ObjectID },
+    _id: { type: Number, required: true },
+    user_id: { type: Number },
     done: { type: Boolean },
     content: { type: String },
     group: { type: Number },
-    date: { type: Date },
   },
-  { versionKey: false }
+  { versionKey: false, _id: false }
 );
-// ItemSchema.virtual('id').get(function () {
-//   return this._id;
-// });
+ItemSchema.pre('save', function(next) {
+  let item = this;
+  Counter.findOneAndUpdate({ _id: 'itemid' }, { $inc: { seq_val: 1 } }, (err, counter) => {
+    if (err) console.log(err);
+    item._id = counter.seq_val;
+    next();
+  });
+});
 export const Item = mongoose.model<ItemDocument>('Item', ItemSchema);

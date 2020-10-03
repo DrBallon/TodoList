@@ -6,8 +6,11 @@ exports.__esModule = true;
 exports.Group = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var GroupSchema = new mongoose_1["default"].Schema({
-    id: { type: Number },
+    // id: { type: Number },
     title: { type: String }
 }, { versionKey: false });
+// GroupSchema.virtual('id').get(function() {
+//   return this._id;
+// });
 exports.Group = mongoose_1["default"].model('Group', GroupSchema);
 //# sourceMappingURL=Group.js.map
