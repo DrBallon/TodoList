@@ -27,67 +27,67 @@ Mock.mock(/^[http://localhost:3000/data]/, 'get', {
     'list|1-10': [ItemTemp],
   }),
 });
-/*
-    additem
-*/
-Mock.mock(/^[http://localhost:3000/item/add]/, 'post', {
-  status: 200,
-  msg: 'success',
-  data: Mock.mock(ItemTemp),
-});
-/*
-    delitem
-*/
-Mock.mock(/^[http://localhost:3000/item/dele]/, 'post', {
-  status: 200,
-  msg: 'success',
-  data: Mock.mock(ItemTemp),
-});
-/*
-    setMode
-*/
-Mock.mock(/^[http://localhost:3000/mode/set]/, 'post', {
-  status: 200,
-  msg: 'success',
-  data: Mock.mock({}),
-});
-/*
-    changeState
-*/
-Mock.mock(/^[http://localhost:3000/item/state]/, 'post', {
-  status: 200,
-  msg: 'success',
-  data: {},
-});
-/*
-    changeState
-*/
-Mock.mock(/^[http://localhost:3000/item/content]/, 'post', {
-  status: 200,
-  msg: 'success',
-  data: {},
-});
-/*
-    changeGroup
-*/
-Mock.mock(/^[http://localhost:3000/item/group]/, 'post', {
-  status: 200,
-  msg: 'success',
-  data: {},
-});
-/*
-    addGroup
-*/
-Mock.mock(/^[http://localhost:3000/group/add]/, 'post', {
-  status: 200,
-  msg: 'success',
-  data: {},
-});
-/*
-    delGrop
-*/
-Mock.mock(/^[http://localhost:3000/group/del]/, 'post', {
-  status: 200,
-  msg: 'success',
-  data: {},
-});
+// /*
+//     additem
+// */
+// Mock.mock(/^[http://localhost:3000/item/add]/, 'post', {
+//   status: 200,
+//   msg: 'success',
+//   data: Mock.mock(ItemTemp),
+// });
+// /*
+//     delitem
+// */
+// Mock.mock(/^[http://localhost:3000/item/dele]/, 'post', {
+//   status: 200,
+//   msg: 'success',
+//   data: Mock.mock(ItemTemp),
+// });
+// /*
+//     setMode
+// */
+// Mock.mock(/^[http://localhost:3000/mode/set]/, 'post', {
+//   status: 200,
+//   msg: 'success',
+//   data: Mock.mock({}),
+// });
+// /*
+//     changeState
+// */
+// Mock.mock(/^[http://localhost:3000/item/state]/, 'post', {
+//   status: 200,
+//   msg: 'success',
+//   data: {},
+// });
+// /*
+//     changeState
+// */
+// Mock.mock(/^[http://localhost:3000/item/content]/, 'post', {
+//   status: 200,
+//   msg: 'success',
+//   data: {},
+// });
+// /*
+//     changeGroup
+// */
+// Mock.mock(/^[http://localhost:3000/item/group]/, 'post', {
+//   status: 200,
+//   msg: 'success',
+//   data: {},
+// });
+// /*
+//     addGroup
+// */
+// Mock.mock(/^[http://localhost:3000/group/add]/, 'post', {
+//   status: 200,
+//   msg: 'success',
+//   data: {},
+// });
+// /*
+//     delGrop
+// */
+// Mock.mock(/^[http://localhost:3000/group/del]/, 'post', {
+//   status: 200,
+//   msg: 'success',
+//   data: {},
+// });

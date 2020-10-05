@@ -23,8 +23,11 @@ const ItemSchema = new mongoose.Schema(
 ItemSchema.pre('save', function(next) {
   let item = this;
   Counter.findOneAndUpdate({ _id: 'itemid' }, { $inc: { seq_val: 1 } }, (err, counter) => {
-    if (err) console.log(err);
-    item._id = counter.seq_val;
+    if (err || !counter) {
+      console.log(err);
+    } else {
+      item._id = counter.seq_val;
+    }
     next();
   });
 });

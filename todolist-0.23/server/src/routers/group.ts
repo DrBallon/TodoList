@@ -1,6 +1,5 @@
 import { User } from './../models/User';
-import { NextFunction } from 'express';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { Group } from '../models/Group';
 const USER_ID = 0;
 export const addGroup = (req: Request, res: Response, next: NextFunction) => {

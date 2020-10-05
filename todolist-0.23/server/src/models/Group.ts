@@ -18,9 +18,11 @@ const GroupSchema = new mongoose.Schema(
 GroupSchema.pre('save', function(next) {
   let group = this;
   Counter.findOneAndUpdate({ _id: 'groupid' }, { $inc: { seq_val: 1 } }, (err, counter, res) => {
-    if (err) console.log(err);
-    console.log('counter:', counter);
-    group._id = counter.seq_val;
+    if (err || !counter) {
+      console.log(err);
+    } else {
+      group._id = counter.seq_val;
+    }
     next();
   });
 });

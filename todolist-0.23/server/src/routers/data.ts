@@ -33,9 +33,9 @@ async function getData(req: Request, res: Response) {
     .project({ id: '$_id', done: 1, content: 1, group: 1, date: 1, _id: 0 })
     .exec();
 
-  const user = await await User.findOne({ _id: testUserId });
+  const user = await User.findOne({ _id: testUserId });
 
-  let groups: Group[];
+  let groups: Group[] = [];
   try {
     groups = await ModelGroup.aggregate()
       .match({ user_id: testUserId })
@@ -47,7 +47,7 @@ async function getData(req: Request, res: Response) {
 
   items.forEach((item) => retData.list.push(item));
   groups.forEach((group) => retData.groups.push(group));
-  retData.curMode = user.curMode;
+  retData.curMode = user ? user.curMode : 0;
   res.send({
     status: 200,
     msg: 'success',

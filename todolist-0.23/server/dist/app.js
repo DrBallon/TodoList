@@ -70,7 +70,7 @@ var app = express_1["default"]();
 // app.use(express.static(path.join(__dirname, 'public/images')));
 // app.use(express.static(path.join(__dirname, 'public/css')));
 mongoose_1["default"]
-    .connect('mongodb://test:123456@localhost:27017/todolist')
+    .connect('mongodb://test:123456@localhost:27017/todolist', { useFindAndModify: false })
     .then(function () {
     console.log('数据库连接成功');
 })["catch"](function (err) {
@@ -80,16 +80,14 @@ mongoose_1["default"]
 app.use(body_parser_1["default"].json());
 app.use(body_parser_1["default"].urlencoded({ extended: false }));
 //设置允许跨域访问该服务.
-app.all('*', function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    res.header('Access-Control-Allow-Methods', '*');
-    res.header('Content-Type', 'application/json;charset=utf-8');
-    next();
-});
+// app.all('', function(req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '');
+//   res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type');
+//   res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
+//   next();
+// });
 app.use(function (req, res, next) {
-    console.log(req.method + "-" + req.body);
+    console.log('[method]:', req.method, ',body:', req.body.data);
     next();
 });
 app.get('/data', Data.getData);
@@ -100,17 +98,17 @@ app.post('/item/del', Item.delItem);
 app.post('/item/content', Item.editContent);
 app.post('/item/state', Item.changeState);
 app.post('/item/group', Item.changGroup);
+app.post('/item/clear', Item.clearItem);
 app.post('/mode/set', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var userId, newMode, retData;
+    var newMode, retData;
     return __generator(this, function (_a) {
-        userId = req.body.data.userId;
-        newMode = req.body.data.newMode;
+        newMode = req.body.newMode;
         retData = {
             status: 200,
             msg: '',
             data: {}
         };
-        User_1.User.findByIdAndUpdate(userId, { mode: newMode }).exec(function (err) {
+        User_1.User.findByIdAndUpdate(0, { curMode: newMode }).exec(function (err) {
             if (err) {
                 retData.status = 500;
                 retData.msg = '没有找到用户';
@@ -122,7 +120,7 @@ app.post('/mode/set', function (req, res, next) { return __awaiter(void 0, void 
     });
 }); });
 app.use(function (err) {
-    console.log('[error]:', err);
+    // console.log('[error]:', err);
 });
 app.listen(3000, function () {
     console.log('服务器开始');

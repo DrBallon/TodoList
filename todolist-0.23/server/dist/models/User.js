@@ -6,11 +6,11 @@ exports.__esModule = true;
 exports.User = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var UserSchema = new mongoose_1["default"].Schema({
-    // id: { type: Number },
+    _id: { type: Number, required: true },
     username: { type: String },
     password: { type: String },
-    mode: { type: Number },
+    curMode: { type: Number },
     groups: { type: Array }
-}, { versionKey: false });
+}, { versionKey: false, _id: false });
 exports.User = mongoose_1["default"].model('User', UserSchema);
 //# sourceMappingURL=User.js.map

@@ -9,14 +9,13 @@
     "copy": "ts-node copyStaticAssets.ts"
   },
   "dependencies": {
-    "@types/mongoose": "^5.7.36",
-    "@types/shelljs": "^0.8.8",
-    "async": "^3.2.0",
     "body-parser": "^1.19.0",
-    "mongoose": "^5.10.7",
-    "shelljs": "^0.8.4"
+    "mongoose": "^5.10.7"
   },
   "devDependencies": {
+    "shelljs": "^0.8.4",
+    "@types/mongoose": "^5.7.36",
+    "@types/shelljs": "^0.8.8",
     "@types/node": "^14.11.2",
     "@typescript-eslint/eslint-plugin": "^4.3.0",
     "@typescript-eslint/parser": "^4.3.0",
