@@ -1,10 +1,6 @@
 import { Commit, ActionTree } from 'vuex';
 import { State, ChangeGroup, EditContent, ChangeState } from './IFs';
 import http from './api';
-// const async changeMode: Action<State, State> = (context: { commit: Commit }, newMode: number) => {
-//   const ret =await http.setMode(USER_ID,newMode)
-//   context.commit('CHANGE_MODE', newMode);
-// };
 async function setData(context: { commit: Commit }) {
   try {
     const data = await http.getData();

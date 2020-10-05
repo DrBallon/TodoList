@@ -1,7 +1,5 @@
-import { User } from './../models/User';
 import { Request, Response, NextFunction } from 'express';
 import { Group } from '../models/Group';
-const USER_ID = 0;
 export const addGroup = (req: Request, res: Response, next: NextFunction) => {
   let title = req.body.title;
   let group = new Group({ title, _id: 0, user_id: 0 });
