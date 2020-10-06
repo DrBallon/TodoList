@@ -3,7 +3,7 @@ const ItemTemp = {
   'id|0-100': 0,
   'done|1-1': true,
   'content|5-10': '',
-  'group|0-1': 0,
+  group: -1,
 };
 // const GroupTemp = {
 //   'id|0-100': 0,
@@ -13,7 +13,7 @@ Mock.mock(/^[http://localhost:3000/data]/, 'get', {
   status: 200,
   msg: 'success',
   data: Mock.mock({
-    curMode: 0,
+    curMode: 1,
     groups: [
       {
         id: 0,
@@ -23,8 +23,12 @@ Mock.mock(/^[http://localhost:3000/data]/, 'get', {
         id: 1,
         title: '已完成',
       },
+      {
+        id: 2,
+        title: '测试分组',
+      },
     ],
-    'list|1-10': [ItemTemp],
+    'list|10-20': [ItemTemp],
   }),
 });
 // /*

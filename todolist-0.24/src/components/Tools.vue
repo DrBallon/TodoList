@@ -27,6 +27,7 @@ export default class Tools extends Vue {
 }
 </script>
 <style lang="scss" scoped>
+@import '~assets/styles/base';
 .tools {
   position: absolute;
   left: 50%;
@@ -35,15 +36,15 @@ export default class Tools extends Vue {
 }
 .center {
   margin: 0 auto;
-  width: 600px;
+  width: $inner-width;
   font-size: 0;
 }
 .add-group,
 .clear {
   font-size: 2rem;
-  height: 4rem;
+  height: $tools-height;
   border-radius: 0.5rem;
-  background-color: #333;
+  background-color: $theme-color-dark;
   color: #fff;
   &:active {
     background-color: #000;

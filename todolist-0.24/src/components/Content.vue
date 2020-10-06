@@ -9,9 +9,11 @@
       </button>
     </div>
     <div class="outer" ref="outer">
-      <div class="inner" ref="inner">
-        <Group v-for="(group, index) in groups" :key="index" :group="group"></Group>
-      </div>
+      <vuescroll>
+        <div class="inner" ref="inner">
+          <Group v-for="(group, index) in groups" :key="index" :group="group"></Group>
+        </div>
+      </vuescroll>
     </div>
   </div>
 </template>
@@ -19,15 +21,15 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import Group from '@/components/Group.vue';
-import MiniScroll from '@/assets/lib/MiniScroll';
+import vuescroll from 'vuescroll';
 @Component({
   name: 'Content',
   components: {
     Group,
+    vuescroll,
   },
 })
 export default class Content extends Vue {
-  private scroll: MiniScroll | null = null;
   changeMode(mode: number) {
     this.$store.dispatch('changeMode', mode);
   }
@@ -51,17 +53,11 @@ export default class Content extends Vue {
   }
   mounted() {
     this.setContentHeight();
-    this.scroll = new MiniScroll(this.$refs.inner as HTMLElement, this.$refs.outer as HTMLElement);
-    this.scroll.addScroll();
   }
   @Watch('groups')
   onGroupsChangeds() {
     this.$nextTick(() => {
       this.setContentHeight();
-      if (!this.scroll) return;
-      this.scroll.removeScroll();
-      this.scroll.addScroll();
-      this.scroll.scrollTo(0);
     });
   }
 }

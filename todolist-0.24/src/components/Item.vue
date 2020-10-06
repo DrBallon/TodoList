@@ -1,19 +1,20 @@
 <template>
   <li class="item">
-    <input type="checkbox" class="item-state" :checked="item.done" @click="state()" />
-    <input type="text" class="item-input" @click="startEdit()" @blur="endEdit()" v-model="data.content" />
-    <i class="el-icon-delete" @click="del()"></i>
-    <div class="select" v-if="curMode == 1">
-      <select v-model="curGroup" @change="changeGroup">
-        <option v-for="(group, index) in getGroups" :key="index" :value="group.id" :checked="group.id == data.group">
-          {{ group.title }}
-        </option>
-        <!-- <option value="0" selected>分组1</option>
-        <option value="1">分组2</option>
-        <option value="2">分组3</option>
-        <option value="3">分组4</option> -->
-      </select>
-    </div>
+    <!-- <input type="checkbox" class="item-state" :checked="item.done" @click="state()" /> -->
+    <el-checkbox class="item-state" v-model="item.done" @click="state()"></el-checkbox>
+    <!-- <input ype="text" class="item-input" @click="startEdit()" @blur="endEdit()" v-model="data.content" /> -->
+    <el-input
+      v-model="data.content"
+      class="item-input"
+      :class="{ mode1: curMode == 1 }"
+      @click="startEdit()"
+      @blur="endEdit()"
+      placeholder="请输入内容"
+    ></el-input>
+    <i class="del-btn el-icon-delete" @click="del()"></i>
+    <el-select class="select" v-model="curGroup" placeholder="请选择" @change="changeGroup" v-if="curMode == 1">
+      <el-option v-for="(group, index) in getGroups" :key="index" :label="group.title" :value="group.id"> </el-option>
+    </el-select>
   </li>
 </template>
 
@@ -85,73 +86,48 @@ export default class Item extends ItemProps {
 </script>
 <style lang="scss" scoped>
 .item {
+  min-width: 360px;
   height: 5rem;
   line-height: 5rem;
   background-color: #fff;
   border-radius: 5px;
   vertical-align: middle;
-  margin: 1rem 0;
+  margin: 1rem;
   user-select: none;
   .item-state {
     width: 4rem;
     height: 4rem;
     margin-left: 1rem;
-    margin-top: 0.5rem;
     float: left;
   }
   .item-input {
     display: block;
-    font-size: 3rem;
+    font-size: 2rem;
     line-height: 5rem;
-    margin-left: 1rem;
-    margin-top: 0.5rem;
     height: 4rem;
-    width: 10rem;
+    width: 35rem;
     box-sizing: border-box;
     background-color: transparent;
     border-radius: 0.5rem;
     float: left;
+    //超过范围省略号
+    &.mode1 {
+      width: 25rem;
+    }
   }
   .item-input:focus {
     border: 1px solid black;
   }
   .select {
-    position: relative;
-    width: 7rem;
-    height: 4rem;
-    margin: 0.5rem 0.5rem;
-    border: 0.1rem solid black;
+    width: 9rem;
     float: right;
-    border-radius: 0.5rem;
-    box-sizing: border-box;
-    overflow: hidden;
-    &::after {
-      position: absolute;
-      content: '';
-      width: 2rem;
-      height: 2rem;
-      display: block;
-      top: 1rem;
-      right: 0.5rem;
-      background: url('../assets/drop-down.png') no-repeat center;
-      background-size: 100% 100%;
-    }
-    select {
-      display: block;
-      font-size: 2rem;
-      font-weight: bold;
-      padding-left: 5px;
-      height: 4rem;
-      line-height: 1.8rem;
-      width: 100%;
-      border-radius: 0.5rem;
-    }
+    margin-right: 1rem;
   }
 }
 .done-item {
   background-color: #dddddd;
 }
-.el-icon-delete {
+.del-btn {
   float: right;
   // margin-right: 1rem;
   margin: 1rem 1rem 0 0;
@@ -159,5 +135,47 @@ export default class Item extends ItemProps {
   user-select: none;
   width: 3rem;
   height: 3rem;
+}
+
+@media screen and (max-width: 600px) {
+  .item {
+    .item-input {
+      width: 25rem;
+      &.mode1 {
+        width: 15rem;
+      }
+    }
+  }
+}
+</style>
+<style lang="scss">
+//checkbox样式覆盖
+.item-state {
+  .el-checkbox__input {
+    .el-checkbox__inner {
+      width: 3rem;
+      height: 3rem;
+    }
+    &.is-checked {
+      .el-checkbox__inner::after {
+        width: 1rem;
+        height: 2rem;
+        left: 1rem;
+        top: 0rem;
+      }
+    }
+  }
+}
+.item-input {
+  input {
+    border: none;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    &:focus {
+      border: 1px solid #dcdfe6;
+    }
+  }
 }
 </style>

@@ -8,9 +8,11 @@
         <span class="circle del-group" v-if="curMode == 1 && group.id != -1" @click="del">删除分组</span>
       </div>
     </div>
-    <ul v-show="showList">
-      <Item v-for="item in groupData.list" :key="item.id" :item="item"></Item>
-    </ul>
+    <el-collapse-transition>
+      <ul v-show="showList">
+        <Item v-for="item in groupData.list" :key="item.id" :item="item"></Item>
+      </ul>
+    </el-collapse-transition>
   </div>
 </template>
 
