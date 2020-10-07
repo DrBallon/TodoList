@@ -1,4 +1,4 @@
-import { State, Group, List, Item, GroupedList } from './IFs';
+import { State, List, Item, GroupedList } from './IFs';
 //排序分组中的list，按照完成优先于未完成，小id优先于大id
 function sortList(list: Item[]) {
   list.sort((a, b) => {

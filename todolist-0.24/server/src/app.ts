@@ -13,7 +13,7 @@ import * as Data from './routers/data';
 import * as User from './routers/user';
 import * as Account from './routers/account';
 //验证
-import { isLogged } from './api/util';
+import { getSession, isLogged } from './api/util';
 const app = express();
 //静态文件托管
 app.use(express.static(path.join(__dirname, 'images')));
@@ -52,8 +52,6 @@ app.use(
 //   res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
 //   next();
 // });
-app.get('/user/avatar', User.getAvatar);
-app.post('/user/mode', User.setMode);
 
 app.post('/login', Account.login);
 app.get('/logout', Account.logout);
@@ -63,7 +61,8 @@ app.post('/register', Account.register);
 app.use((req, res, next) => {
   console.log('[method]:', req.method);
   if (isLogged(req, res)) {
-    res.cookie('username', req.body.username, { maxAge: 60 * 1000, httpOnly: true });
+    console.log('已登录');
+    res.cookie('username', getSession(req).username, { maxAge: 60 * 1000, httpOnly: true });
     next();
   } else {
     res.send({
@@ -74,6 +73,8 @@ app.use((req, res, next) => {
   }
 });
 app.get('/data', Data.getData);
+app.post('/user/mode', User.setMode);
+app.get('/user/avatar', User.getAvatar);
 
 app.post('/group/add', Group.addGroup);
 app.post('/group/del', Group.delGroup);

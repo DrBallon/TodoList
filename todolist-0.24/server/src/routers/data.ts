@@ -3,6 +3,7 @@ import { ObjectID } from 'mongodb';
 import { User } from '../models/User';
 import { Item as ModelItem, ItemDocument } from '../models/Item';
 import { Group as ModelGroup, GroupDocument } from '../models/Group';
+import { ret } from '../api/retData';
 // import mongoose from 'mongoose';
 
 const testUserId = 0;
@@ -20,13 +21,17 @@ interface RetData {
   curMode: number;
   groups: Group[];
   list: Item[];
+  avatar: string;
 }
 
 async function getData(req: Request, res: Response) {
+  console.log('==========getData==========');
+  console.log(req.cookies);
   let retData: RetData = {
     curMode: 0,
     groups: [],
     list: [],
+    avatar: '',
   };
   const user = await User.findOne({ username: req.cookies['username'] });
   let userId = user && user._id;
@@ -49,8 +54,8 @@ async function getData(req: Request, res: Response) {
   items.forEach((item) => retData.list.push(item));
   groups.forEach((group) => retData.groups.push(group));
   retData.curMode = user ? user.curMode : 0;
-
-  //session存在，且请求头带cookies，且session和cookie相等
+  const avatar = user && user.avatar != '' ? 'http://localhost:3000/' + user.avatar : '';
+  retData.avatar = avatar;
   res.send({
     status: 200,
     msg: '成功',

@@ -1,8 +1,6 @@
 import crypto from 'crypto';
 import { Request, Response, NextFunction } from 'express';
 export function isLogged(req: Request, res: Response): boolean {
-  // const isLogged = req.session && req.cookies && req.session[req.cookies.username] == req.cookies['username'];
-  // return isLogged;
   console.log(getCookie(req, res), getSession(req));
   return getCookie(req, res) == getSession(req).username;
 }

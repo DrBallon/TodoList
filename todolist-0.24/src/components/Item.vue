@@ -24,7 +24,6 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Item as ItemInterface } from '@/store/IFs';
 import { PropType } from 'vue';
 import { dispatchChangeGroup, dispatchEditContent } from '@/store';
-import { TagType } from 'element-ui/types/tag';
 const ItemProps = Vue.extend({
   props: {
     item: Object as PropType<ItemInterface>,

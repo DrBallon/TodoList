@@ -55,17 +55,13 @@ export default class App extends Vue {
     // this.$store.dispatch('setData');
     http.getData().then((res) => {
       if (res.status == 200) {
-        this.$store.dispatch('setData', res.data);
+        const { curMode, groups, list, avatar } = res.data;
+        this.$store.dispatch('setData', { curMode, groups, list });
+        this.avatar = res.data.avatar;
         this.showPanel = false;
         this.panelType = 1;
       } else {
         this.showPanel = true;
-      }
-    });
-    http.getAvatar().then((res) => {
-      if (res.status == 200) {
-        this.avatar = res.data.avatar;
-      } else {
         this.avatar = '';
       }
     });

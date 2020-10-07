@@ -12,6 +12,7 @@ export const logout = (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
+  console.log('==========login==========');
   let { username, password } = req.body;
   const user = await findOneUser({ username });
   if (user) {
@@ -19,7 +20,6 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     if (user) {
       req.session && (req.session[username] = { username, id: user._id });
       res.cookie('username', username, { maxAge: 60 * 1000, httpOnly: true });
-
       res.send(retData(200, '登陆成功'));
     } else {
       res.send(retData(500, '密码不对'));
