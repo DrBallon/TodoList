@@ -1,14 +1,13 @@
 import { Commit, ActionTree } from 'vuex';
 import { State, ChangeGroup, EditContent, ChangeState } from './IFs';
 import http from './api';
-async function setData(context: { commit: Commit }) {
-  try {
-    const data = await http.getData();
-    console.log('data:', data);
-    context.commit('SET_DATA', data);
-  } catch (error) {
-    console.log(error);
-  }
+async function setData(context: { commit: Commit }, payload: State) {
+  payload = payload || {
+    curMode: 0,
+    groups: [],
+    list: [],
+  };
+  context.commit('SET_DATA', payload);
 }
 async function clearItem(context: { commit: Commit }) {
   context.commit('CLEAR_ITEM');
@@ -68,9 +67,9 @@ async function addItem(context: { commit: Commit }, content: string) {
   }
 }
 async function addGroup(context: { commit: Commit }, groupTitle: string) {
-  context.commit('ADD_GROUP', groupTitle);
   try {
-    await http.addGroup(groupTitle);
+    const newGroup = await http.addGroup(groupTitle);
+    if (newGroup) context.commit('ADD_GROUP', newGroup);
   } catch (error) {
     console.log(error);
   }

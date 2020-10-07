@@ -1,15 +1,22 @@
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
 import express from 'express';
+//express 中间件
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+//依赖
+import mongoose from 'mongoose';
+import path from 'path';
+//路由
 import * as Group from './routers/group';
 import * as Item from './routers/item';
 import * as Data from './routers/data';
-import { User, UserDocument } from './models/User';
-
+import * as User from './routers/user';
+import * as Account from './routers/account';
+//验证
+import { isLogged } from './api/util';
 const app = express();
 //静态文件托管
-// app.use(express.static(path.join(__dirname, 'public/images')));
-// app.use(express.static(path.join(__dirname, 'public/css')));
+app.use(express.static(path.join(__dirname, 'images')));
 
 mongoose
   .connect('mongodb://test:123456@localhost:27017/todolist', { useFindAndModify: false })
@@ -24,6 +31,20 @@ mongoose
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(cookieParser());
+
+app.use(
+  session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 60 * 60 * 1000,
+    },
+    rolling: true, //在每次请求时强行设置 cookie，这将重置 cookie 过期时间（默认：false）
+  })
+);
+
 //设置允许跨域访问该服务.
 // app.all('', function(req, res, next) {
 //   res.header('Access-Control-Allow-Origin', '');
@@ -31,9 +52,26 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //   res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
 //   next();
 // });
+app.get('/user/avatar', User.getAvatar);
+app.post('/user/mode', User.setMode);
+
+app.post('/login', Account.login);
+app.get('/logout', Account.logout);
+app.post('/register', Account.register);
+
+//判断登录状态
 app.use((req, res, next) => {
-  console.log('[method]:', req.method, ',body:', req.body.data);
-  next();
+  console.log('[method]:', req.method);
+  if (isLogged(req, res)) {
+    res.cookie('username', req.body.username, { maxAge: 60 * 1000, httpOnly: true });
+    next();
+  } else {
+    res.send({
+      status: 500,
+      msg: '未登录',
+      data: {},
+    });
+  }
 });
 app.get('/data', Data.getData);
 
@@ -47,22 +85,6 @@ app.post('/item/state', Item.changeState);
 app.post('/item/group', Item.changGroup);
 app.post('/item/clear', Item.clearItem);
 
-app.post('/mode/set', async (req, res, next) => {
-  let newMode: number = req.body.newMode;
-  let retData = {
-    status: 200,
-    msg: '',
-    data: {},
-  };
-  User.findByIdAndUpdate(0, { curMode: newMode }).exec((err) => {
-    if (err) {
-      retData.status = 500;
-      retData.msg = '没有找到用户';
-      next(err);
-    }
-    res.send(retData);
-  });
-});
 app.use((err) => {
   // console.log('[error]:', err);
 });

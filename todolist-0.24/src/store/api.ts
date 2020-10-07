@@ -8,7 +8,10 @@ interface Params {
   done?: boolean;
   group?: number;
 }
-
+interface From {
+  username: string;
+  password: string;
+}
 // 添加请求拦截器
 axios.interceptors.request.use(
   function(config) {
@@ -25,24 +28,42 @@ axios.interceptors.request.use(
 class Http {
   private instance = axios.create({
     baseURL: '/api',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
-  get(url: string, params: Params) {
+  get(url: string, params?: Params | From) {
     return this.instance.get(url, { params });
   }
-  post(url: string, params: Params) {
-    console.log(params);
+  post(url: string, params?: Params | From) {
     return this.instance.post(url, params);
   }
+  async getAvatar() {
+    const ret = await this.get('/user/avatar');
+    return ret ? ret.data : {};
+  }
+  async login(form: From) {
+    const ret = await this.post('/login', form);
+    return ret ? ret.data : {};
+  }
+  async register(form: From) {
+    const ret = await this.post('/register', form);
+    return ret ? ret.data : {};
+  }
+  async logout() {
+    const ret = await this.get('/logout');
+    return ret ? ret.data : {};
+  }
   async getData() {
-    const data = await this.get('/data', {});
-    return data ? data.data.data : {};
+    const data = await this.get('/data');
+    return data ? data.data : {};
   }
   async clearItem() {
-    const data = await this.post('/item/clear', {});
+    const data = await this.post('/item/clear');
     return data ? data.data.data : {};
   }
   async setMode(newMode: number) {
-    const data = await this.post('mode/set', { newMode });
+    const data = await this.post('/user/mode', { newMode });
     return data ? data.data.data : {};
   }
   async addItem(content: string) {
@@ -55,7 +76,7 @@ class Http {
   }
   async changeState(id: number, newState: boolean) {
     const data = await this.post('item/state', { id, done: newState });
-    console.log('[changeState]:', data);
+    // console.log('[changeState]:', data);
     return data ? data.data.data : {};
   }
   async changeContent(id: number, content: string) {

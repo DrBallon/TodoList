@@ -1,41 +1,31 @@
 import { Request, Response, NextFunction } from 'express';
+import { ret } from '../api/retData';
+import { getSession } from '../api/util';
 import { Group } from '../models/Group';
 export const addGroup = (req: Request, res: Response, next: NextFunction) => {
   let title = req.body.title;
-  let group = new Group({ title, _id: 0, user_id: 0 });
-  let retData = {
-    status: 200,
-    msg: '',
-    data: {},
-  };
+  let user_id = getSession(req).id;
+  let group = new Group({ title, _id: 0, user_id });
   group.save((err, resGroup) => {
     if (err) {
       next(err);
-      retData.status = 500;
-      retData.msg = '添加失败';
     }
     // console.log('resGroup', resGroup);
     let { _id: id, title } = resGroup;
-    retData.data = {
-      id,
-      title,
-    };
-    res.send(retData);
+    res.send(
+      ret('addGroup', !err, {
+        id,
+        title,
+      })
+    );
   });
 };
 export const delGroup = (req: Request, res: Response, next: NextFunction) => {
-  let retData = {
-    status: 200,
-    msg: '完成',
-    data: {},
-  };
   let id: number = req.body.id;
   Group.remove({ _id: id }, (err) => {
     if (err) {
-      retData.status = 500;
-      retData.msg = 'failed';
       next(err);
     }
-    res.send(retData);
+    res.send(ret('delGroup', !err));
   });
 };

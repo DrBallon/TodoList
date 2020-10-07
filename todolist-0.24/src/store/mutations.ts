@@ -1,5 +1,5 @@
 import * as type from './mutation_types';
-import { State, Item, ChangeGroup, EditContent } from './IFs';
+import { State, Item, ChangeGroup, EditContent, Group } from './IFs';
 const logFlag = true;
 export default {
   [type.SET_DATA](state: State, data: State) {
@@ -50,11 +50,7 @@ export default {
     item.content = content;
     state.list.push(item);
   },
-  [type.ADD_GROUP](state: State, groupTitle: string) {
-    const index = state.groups.findIndex((group) => group.title == groupTitle);
-    if (index != -1) return;
-    const group = { id: 0, title: groupTitle };
-    group.id = state.groups.length == 0 ? 0 : state.groups[state.groups.length - 1].id + 1;
+  [type.ADD_GROUP](state: State, group: Group) {
     state.groups.push(group);
   },
   [type.DEL_GROUP](state: State, groupId: number) {

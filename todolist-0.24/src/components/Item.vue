@@ -1,13 +1,14 @@
 <template>
   <li class="item">
     <!-- <input type="checkbox" class="item-state" :checked="item.done" @click="state()" /> -->
-    <el-checkbox class="item-state" v-model="item.done" @click="state()"></el-checkbox>
+
+    <el-checkbox class="item-state" v-model="item.done" @click.native="state($event.target.tagName)"></el-checkbox>
     <!-- <input ype="text" class="item-input" @click="startEdit()" @blur="endEdit()" v-model="data.content" /> -->
     <el-input
       v-model="data.content"
       class="item-input"
       :class="{ mode1: curMode == 1 }"
-      @click="startEdit()"
+      @click.native="startEdit()"
       @blur="endEdit()"
       placeholder="请输入内容"
     ></el-input>
@@ -23,6 +24,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Item as ItemInterface } from '@/store/IFs';
 import { PropType } from 'vue';
 import { dispatchChangeGroup, dispatchEditContent } from '@/store';
+import { TagType } from 'element-ui/types/tag';
 const ItemProps = Vue.extend({
   props: {
     item: Object as PropType<ItemInterface>,
@@ -53,7 +55,8 @@ export default class Item extends ItemProps {
       newGroup: this.curGroup,
     });
   }
-  state() {
+  state(tagName: string) {
+    if (tagName != 'INPUT') return;
     this.$store.dispatch('changeState', { itemId: this.data.id, newState: !this.data.done });
   }
   del() {
@@ -86,7 +89,7 @@ export default class Item extends ItemProps {
 </script>
 <style lang="scss" scoped>
 .item {
-  min-width: 360px;
+  min-width: 300px;
   height: 5rem;
   line-height: 5rem;
   background-color: #fff;
@@ -105,7 +108,7 @@ export default class Item extends ItemProps {
     font-size: 2rem;
     line-height: 5rem;
     height: 4rem;
-    width: 35rem;
+    width: 30rem;
     box-sizing: border-box;
     background-color: transparent;
     border-radius: 0.5rem;
@@ -140,9 +143,9 @@ export default class Item extends ItemProps {
 @media screen and (max-width: 600px) {
   .item {
     .item-input {
-      width: 25rem;
+      width: 20rem;
       &.mode1 {
-        width: 15rem;
+        width: 12rem;
       }
     }
   }

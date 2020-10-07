@@ -9,11 +9,9 @@
       </button>
     </div>
     <div class="outer" ref="outer">
-      <vuescroll>
-        <div class="inner" ref="inner">
-          <Group v-for="(group, index) in groups" :key="index" :group="group"></Group>
-        </div>
-      </vuescroll>
+      <div class="inner" ref="inner">
+        <Group v-for="(group, index) in groups" :key="index" :group="group"></Group>
+      </div>
     </div>
   </div>
 </template>
@@ -21,15 +19,15 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import Group from '@/components/Group.vue';
-import vuescroll from 'vuescroll';
+import BScroll from 'better-scroll';
 @Component({
   name: 'Content',
   components: {
     Group,
-    vuescroll,
   },
 })
 export default class Content extends Vue {
+  private scroll: BScroll | null = null;
   changeMode(mode: number) {
     this.$store.dispatch('changeMode', mode);
   }
@@ -43,6 +41,8 @@ export default class Content extends Vue {
     const title: Element | null = document.querySelector('.title');
     const switchMode: Element | null = document.querySelector('.switch-mode');
     const height: number = window.innerHeight - getHeight(tools) - getHeight(title) - getHeight(switchMode);
+    // console.log('outer:', height);
+    // console.log('inner:', getHeight(this.$refs.inner as HTMLElement));
     (this.$refs.outer as HTMLElement).style.height = height + 'px';
   }
   get curMode() {
@@ -52,12 +52,15 @@ export default class Content extends Vue {
     return this.$store.getters.groups;
   }
   mounted() {
+    this.scroll = new BScroll(this.$refs.outer as HTMLElement);
     this.setContentHeight();
   }
   @Watch('groups')
   onGroupsChangeds() {
     this.$nextTick(() => {
       this.setContentHeight();
+      this.scroll && this.scroll.destroy();
+      this.scroll = new BScroll(this.$refs.outer as HTMLElement);
     });
   }
 }

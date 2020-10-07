@@ -3,7 +3,12 @@
     <div class="title clearfix">
       <h2>{{ groupData.title }}</h2>
       <div class="toolbar clearfix">
-        <span class="iconfont" :class="showList ? 'drop-down' : 'drop-up'" @click="toggle"></span>
+        <i
+          class="fold"
+          :class="showList ? 'el-icon-arrow-down' : 'el-icon-arrow-up'"
+          @click="toggle"
+          @touch-up="toggle"
+        ></i>
         <span class="circle percent" style="display: none">50%</span>
         <span class="circle del-group" v-if="curMode == 1 && group.id != -1" @click="del">删除分组</span>
       </div>
@@ -80,14 +85,16 @@ export default class Group extends GroupProps {
     .toolbar {
       position: relative;
       float: right;
-      .iconfont {
-        position: absolute;
-        top: 0.35rem;
-        right: 0.5rem;
-      }
-      .drop-down,
-      .drop-up {
-        font-size: 4rem;
+      .fold {
+        position: relative;
+        width: 5rem;
+        height: 5rem;
+        &::before {
+          position: absolute;
+          font-size: 3rem;
+          top: 1rem;
+          left: 1rem;
+        }
       }
       .circle {
         display: block;

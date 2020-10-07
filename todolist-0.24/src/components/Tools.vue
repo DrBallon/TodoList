@@ -33,6 +33,7 @@ export default class Tools extends Vue {
   left: 50%;
   bottom: 0rem;
   transform: translateX(-50%);
+  z-index: 10;
 }
 .center {
   margin: 0 auto;
@@ -56,21 +57,15 @@ export default class Tools extends Vue {
 .half-btn {
   width: 48%;
   &:nth-child(1) {
-    margin-right: 2%;
+    margin-right: 4%;
   }
 }
 @media screen and (max-width: 600px) {
   .center {
     width: 100%;
   }
-  .full-btn {
-    width: 100%;
-  }
   .half-btn {
     width: 48%;
-  }
-  .half-btn:nth-child(1) {
-    margin-right: 2%;
   }
 }
 </style>
