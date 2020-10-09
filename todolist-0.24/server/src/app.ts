@@ -6,14 +6,14 @@ import session from 'express-session';
 //依赖
 import mongoose from 'mongoose';
 import path from 'path';
+
 //路由
-import * as Group from './routers/group';
-import * as Item from './routers/item';
-import * as Data from './routers/data';
-import * as User from './routers/user';
-import * as Account from './routers/account';
-//验证
-import { getSession, isLogged } from './api/util';
+import accountRouter from './routers/account';
+import dataRouter from './routers/data';
+import groupRouter from './routers/group';
+import itemRouter from './routers/item';
+import userRouter from './routers/user';
+
 const app = express();
 //静态文件托管
 app.use(express.static(path.join(__dirname, 'images')));
@@ -53,38 +53,11 @@ app.use(
 //   next();
 // });
 
-app.post('/login', Account.login);
-app.get('/logout', Account.logout);
-app.post('/register', Account.register);
-
-//判断登录状态
-app.use((req, res, next) => {
-  console.log('[method]:', req.method);
-  if (isLogged(req, res)) {
-    console.log('已登录');
-    res.cookie('username', getSession(req).username, { maxAge: 60 * 1000, httpOnly: true });
-    next();
-  } else {
-    res.send({
-      status: 500,
-      msg: '未登录',
-      data: {},
-    });
-  }
-});
-app.get('/data', Data.getData);
-app.post('/user/mode', User.setMode);
-app.get('/user/avatar', User.getAvatar);
-
-app.post('/group/add', Group.addGroup);
-app.post('/group/del', Group.delGroup);
-
-app.post('/item/add', Item.addItem);
-app.post('/item/del', Item.delItem);
-app.post('/item/content', Item.editContent);
-app.post('/item/state', Item.changeState);
-app.post('/item/group', Item.changGroup);
-app.post('/item/clear', Item.clearItem);
+app.use(accountRouter);
+app.use(dataRouter);
+app.use(groupRouter);
+app.use(itemRouter);
+app.use(userRouter);
 
 app.use((err) => {
   // console.log('[error]:', err);

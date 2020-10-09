@@ -1,81 +1,50 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, Router } from 'express';
 import { ret, retData } from '../api/retData';
-import { getSession } from '../api/util';
-import { Item } from '../models/Item';
-const USER_ID = 0;
-export const changeState = (req: Request, res: Response, next: NextFunction) => {
+import { getSession, isLogged } from '../api/util';
+import { ItemDao } from '../models/Item';
+const router = Router();
+
+router.use(isLogged);
+
+router.post('/item/state', async (req: Request, res: Response, next: NextFunction) => {
   let { id, done } = req.body;
   console.log(id, done);
-  Item.updateOne({ _id: id }, { done }, (err) => {
-    if (err) {
-      next(err);
-    }
-    res.send(ret('changeState', !err));
-  });
-};
-export const changGroup = (req: Request, res: Response, next: NextFunction) => {
+  let ret1 = await ItemDao.state(id, done);
+  res.send(ret('changeState', ret1));
+});
+router.post('/item/group', async (req: Request, res: Response, next: NextFunction) => {
   let { id, group } = req.body;
-  Item.updateOne({ _id: id }, { group }, (err) => {
-    if (err) {
-      next(err);
-    }
-    res.send(ret('changGroup', !err));
-  });
-};
-export const editContent = (req: Request, res: Response, next: NextFunction) => {
+  let ret1 = await ItemDao.group(id, group);
+  res.send(ret('changGroup', ret1));
+});
+router.post('/item/content', async (req: Request, res: Response, next: NextFunction) => {
   let { id, content } = req.body;
-  Item.updateOne({ _id: id }, { content }, (err) => {
-    if (err) {
-      next(err);
-    }
-    res.send(ret('changGroup', !err));
-  });
-};
-
-export const clearItem = (req: Request, res: Response, next: NextFunction) => {
-  console.log('clear');
-  Item.deleteMany({ user_id: USER_ID }, (err) => {
-    if (err) {
-      next(err);
-    }
-    res.send(ret('changGroup', !err));
-  });
-};
-export const delItem = (req: Request, res: Response, next: NextFunction) => {
+  let ret1 = await ItemDao.content(id, content);
+  res.send(ret('editContent', ret1));
+});
+router.post('/item/clear', async (req: Request, res: Response, next: NextFunction) => {
+  let { id } = req.body;
+  let ret1 = await ItemDao.clear(id);
+  res.send(ret('editContent', ret1));
+});
+router.post('/item/del', async (req: Request, res: Response, next: NextFunction) => {
   let id = req.body.id;
-  Item.deleteOne({ _id: id }, (err) => {
-    if (err) {
-      next(err);
-    }
-    res.send(ret('delItem', !err));
-  });
-};
-export const addItem = (req: Request, res: Response, next: NextFunction) => {
+  let ret1 = await ItemDao.del(id);
+  res.send(ret('delItem', ret1));
+});
+router.post('/item/add', async (req: Request, res: Response, next: NextFunction) => {
   let user_id = getSession(req).id;
   let content = req.body.content;
   if (!content) {
     res.send(retData(500, '未设置内容', {}));
     return;
   }
-  const item = new Item({
-    _id: 0,
-    user_id,
-    done: false,
-    content,
-    group: -1,
-  });
-  item.save((err, resItem) => {
-    if (err) {
-      next(err);
-    }
-    let { _id, done, content, group } = resItem;
-    res.send(
-      ret('addItem', !err, {
-        id: _id,
-        done,
-        content,
-        group,
-      })
-    );
-  });
-};
+  let ret1 = await ItemDao.add(user_id, content);
+
+  if (ret1) {
+    res.send(retData(200, '添加成功', ret1));
+  } else {
+    res.send(retData(500, '添加失败'));
+  }
+});
+export default router;

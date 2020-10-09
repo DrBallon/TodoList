@@ -1,31 +1,24 @@
-import { Request, Response, NextFunction } from 'express';
-import { ret } from '../api/retData';
-import { getSession } from '../api/util';
-import { Group } from '../models/Group';
-export const addGroup = (req: Request, res: Response, next: NextFunction) => {
+import { Request, Response, NextFunction, Router } from 'express';
+import { ret, retData } from '../api/retData';
+import { getSession, isLogged } from '../api/util';
+import { GroupDao } from '../models/Group';
+const router = Router();
+
+router.use(isLogged);
+
+router.post('/group/add', async (req: Request, res: Response, next: NextFunction) => {
   let title = req.body.title;
   let user_id = getSession(req).id;
-  let group = new Group({ title, _id: 0, user_id });
-  group.save((err, resGroup) => {
-    if (err) {
-      next(err);
-    }
-    // console.log('resGroup', resGroup);
-    let { _id: id, title } = resGroup;
-    res.send(
-      ret('addGroup', !err, {
-        id,
-        title,
-      })
-    );
-  });
-};
-export const delGroup = (req: Request, res: Response, next: NextFunction) => {
+  let group = await GroupDao.add(user_id, title);
+  if (group) {
+    res.send(retData(200, '添加成功', group));
+  } else {
+    res.send(retData(500, '添加失败'));
+  }
+});
+router.post('/group/del', async (req: Request, res: Response, next: NextFunction) => {
   let id: number = req.body.id;
-  Group.remove({ _id: id }, (err) => {
-    if (err) {
-      next(err);
-    }
-    res.send(ret('delGroup', !err));
-  });
-};
+  let ret1 = await GroupDao.del(id);
+  res.send(ret('delGroup', !!ret1));
+});
+export default router;

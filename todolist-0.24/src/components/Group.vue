@@ -1,13 +1,17 @@
 <template>
-  <div class="group clearfix">
-    <div class="title clearfix">
-      <h2>{{ groupData.title }}</h2>
-      <div class="toolbar clearfix">
-        <i class="fold" :class="showList ? 'el-icon-arrow-down' : 'el-icon-arrow-up'" @click="toggle"></i>
-        <span class="circle percent" style="display: none">50%</span>
-        <span class="circle del-group" v-if="curMode == 1 && group.id != -1" @click="del">删除分组</span>
-      </div>
-    </div>
+  <div class="group">
+    <el-row>
+      <el-col :span="curMode == 0 ? 22 : 20">
+        <h2>{{ groupData.title }}</h2>
+      </el-col>
+      <el-col :span="2" v-if="curMode == 1 && group.id != -1">
+        <el-button type="danger" icon="el-icon-minus" @click="del" circle></el-button>
+      </el-col>
+      <el-col :span="2" :offset="group.id == -1 && curMode == 1 ? 2 : 0">
+        <el-button type="danger" v-if="showList" icon="el-icon-arrow-down" @click="showList = false" circle></el-button>
+        <el-button type="danger" v-else icon="el-icon-arrow-up" @click="showList = true" circle></el-button>
+      </el-col>
+    </el-row>
     <el-collapse-transition>
       <ul v-show="showList">
         <Item v-for="item in groupData.list" :key="item.id" :item="item"></Item>
@@ -35,15 +39,17 @@ const GroupProps = Vue.extend({
 })
 export default class Group extends GroupProps {
   private groupData: List = { id: -1, title: '', list: [] };
+  private layout = {
+    title: { span: 22 },
+    del: { span: 2 },
+    toggle: { span: 2 },
+  };
   private showList = true;
   get curMode() {
     return this.$store.getters.getCurMode || 0;
   }
   del() {
     this.$store.dispatch('delGroup', this.groupData.id);
-  }
-  toggle() {
-    this.showList = !this.showList;
   }
   created() {
     this.groupData = this.group;
@@ -55,22 +61,14 @@ export default class Group extends GroupProps {
 }
 </script>
 <style lang="scss" scoped>
-.inner {
-  position: absolute;
-  width: 600px;
-  left: 50%;
-  transform: translateX(-50%);
-}
+/*
 .group {
   width: 600px;
-  /* width: 100%; */
   margin: 0 auto;
   .title {
-    /* margin: 1rem 0; */
     height: 5rem;
     user-select: none;
     h2 {
-      /* padding-top: 1rem; */
       margin-top: 1rem;
       line-height: 3rem;
       font-size: 2rem;
@@ -116,11 +114,44 @@ export default class Group extends GroupProps {
     }
   }
 }
-
+*/
 @media screen and (max-width: 600px) {
   .group {
     width: 100%;
     margin: 0 auto;
+  }
+}
+</style>
+<style lang="scss">
+@import '~assets/styles/base';
+.group {
+  .el-row {
+    margin-top: 0.5rem;
+    height: 4rem;
+    font-size: 2rem;
+    .el-col {
+      .el-button {
+        position: relative;
+        height: 4rem;
+        width: 4rem;
+        background-color: $theme-color-dark;
+        border: 0.2rem solid $theme-color-dark;
+        box-sizing: border-box;
+        font-size: 2rem;
+        &:active {
+          background-color: $theme-color-gray;
+          color: $theme-color-dark;
+          border: 0.2rem solid $theme-color-dark;
+        }
+        i {
+          position: absolute;
+          height: 2rem;
+          width: 2rem;
+          top: 0.8rem;
+          left: 0.8rem;
+        }
+      }
+    }
   }
 }
 </style>

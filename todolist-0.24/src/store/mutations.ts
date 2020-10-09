@@ -58,5 +58,10 @@ export default {
     if (index == -1) return;
     console.log(index);
     state.groups.splice(index, 1);
+    state.list.forEach((item) => {
+      if (item.group == groupId) {
+        item.group = -1;
+      }
+    });
   },
 };

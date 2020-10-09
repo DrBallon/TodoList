@@ -57,7 +57,7 @@ export default class App extends Vue {
       if (res.status == 200) {
         const { curMode, groups, list, avatar } = res.data;
         this.$store.dispatch('setData', { curMode, groups, list });
-        this.avatar = res.data.avatar;
+        this.avatar = avatar;
         this.showPanel = false;
         this.panelType = 1;
       } else {

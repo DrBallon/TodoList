@@ -145,20 +145,15 @@ export default class Panel extends PanelProps {
     });
   }
   async onRegister() {
-    (this.$refs['loginForm'] as Form).validate(async (valid) => {
+    (this.$refs['regForm'] as Form).validate(async (valid) => {
       if (valid) {
-        const submitRet = await http.login(this.loginForm);
+        const submitRet = await http.register(this.regForm);
         if (submitRet.status == 200) {
-          const submitRet = await http.register(this.regForm);
-          if (submitRet.status == 200) {
-            // alert('登录')
-            this.$message.success('注册成功');
-            this.changePanelType(0);
-          } else {
-            this.$message.success('注册失败');
-          }
+          // alert('登录')
+          this.$message.success('注册成功');
+          this.changePanelType(0);
         } else {
-          this.$message.error('登录失败');
+          this.$message.success('注册失败');
         }
       } else {
         this.$message.error('表单校验未通过');

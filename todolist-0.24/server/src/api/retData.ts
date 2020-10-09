@@ -22,7 +22,8 @@ export function retData(status = 200, msg = '', data = {}) {
     data,
   };
 }
-export function ret(type: string, condtion: boolean, data?: Object) {
+
+export function ret(type: string, condtion: boolean, data?: Group) {
   let status = condtion ? retStatTypes.success : retStatTypes.error;
   let msg = '';
   let index = condtion ? 0 : 1;
@@ -36,6 +37,7 @@ export function ret(type: string, condtion: boolean, data?: Object) {
     type == 'delGroup' ||
     type == 'delItem' ||
     type == 'changGroup' ||
+    type == 'editContent' ||
     type == 'addItem'
   ) {
     msg = retMsg[type][index];

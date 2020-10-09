@@ -1,6 +1,7 @@
+/// <reference path="../main.d.ts" />
+/// <reference path="../condition.d.ts" />
 import { Counter } from './Counter';
 import mongoose from 'mongoose';
-import { Group } from '../routers/data';
 export type UserDocument = mongoose.Document & {
   _id: number;
   username: string;
@@ -35,7 +36,57 @@ UserSchema.pre('save', function(next) {
 });
 export const User = mongoose.model<UserDocument>('User', UserSchema);
 
-export const findOneUser = async function(condition: Object) {
-  let user = await User.findOne(condition);
-  return user;
-};
+class AccountDao {
+  static add = async (username: string, password: string) => {
+    const user = new User({
+      _id: 0,
+      username,
+      password,
+      curMode: 0,
+      groups: [],
+      list: [],
+      avatar: '',
+    });
+    try {
+      let retUser = await user.save();
+      return retUser ? retUser : null;
+    } catch (error) {
+      return null;
+    }
+  };
+
+  static find = async (condition: number | FindOneUser) => {
+    try {
+      const user = await User.aggregate()
+        .match(condition)
+        .project({ id: '$_id', username: 1, password: 1, avatar: 1, groups: 1, curMode: 1 })
+        .exec();
+      if (user.length < 1) {
+        return null;
+      } else {
+        return user[0];
+      }
+    } catch (error) {
+      return null;
+    }
+  };
+  static findById = async (id: number) => {
+    try {
+      const user = User.aggregate()
+        .match({ _id: id })
+        .project({ id: '$_id', username: 1, password: 1, avatar: 1, groups: 1, curMode: 1 })
+        .exec();
+      if (user.length < 1) {
+        return null;
+      } else {
+        return user[0];
+      }
+    } catch (error) {
+      return null;
+    }
+  };
+  static findOne = async (condition: FindOneUser) => {
+    return await User.findOne(condition);
+  };
+}
+export { AccountDao };
