@@ -52,7 +52,9 @@ export default class Content extends Vue {
     return this.$store.getters.groups;
   }
   mounted() {
-    this.scroll = new BScroll(this.$refs.outer as HTMLElement);
+    this.scroll = new BScroll(this.$refs.outer as HTMLElement, {
+      click: true,
+    });
     this.setContentHeight();
   }
   @Watch('groups')
@@ -60,7 +62,9 @@ export default class Content extends Vue {
     this.$nextTick(() => {
       this.setContentHeight();
       this.scroll && this.scroll.destroy();
-      this.scroll = new BScroll(this.$refs.outer as HTMLElement);
+      this.scroll = new BScroll(this.$refs.outer as HTMLElement, {
+        click: true,
+      });
     });
   }
 }

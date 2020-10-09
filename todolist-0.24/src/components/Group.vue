@@ -3,12 +3,7 @@
     <div class="title clearfix">
       <h2>{{ groupData.title }}</h2>
       <div class="toolbar clearfix">
-        <i
-          class="fold"
-          :class="showList ? 'el-icon-arrow-down' : 'el-icon-arrow-up'"
-          @click="toggle"
-          @touch-up="toggle"
-        ></i>
+        <i class="fold" :class="showList ? 'el-icon-arrow-down' : 'el-icon-arrow-up'" @click="toggle"></i>
         <span class="circle percent" style="display: none">50%</span>
         <span class="circle del-group" v-if="curMode == 1 && group.id != -1" @click="del">删除分组</span>
       </div>
