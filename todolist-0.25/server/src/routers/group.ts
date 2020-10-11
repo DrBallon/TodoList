@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, Router } from 'express';
-import { ret, retData } from '../api/retData';
+import { retData } from '../api/util';
 import { getSession, isLogged } from '../api/util';
 import { GroupDao } from '../models2/Group';
 const router = Router();
@@ -18,7 +18,12 @@ router.post('/group/add', async (req: Request, res: Response, next: NextFunction
 });
 router.post('/group/del', async (req: Request, res: Response, next: NextFunction) => {
   let id: number = req.body.id;
-  let ret1 = await GroupDao.del(id);
-  res.send(ret('delGroup', !!ret1));
+  let user_id = getSession(req).id;
+  let ret1 = await GroupDao.del(user_id, id);
+  if (ret1) {
+    res.send(retData(200, '删除成功'));
+  } else {
+    res.send(retData(500, '删除失败'));
+  }
 });
 export default router;

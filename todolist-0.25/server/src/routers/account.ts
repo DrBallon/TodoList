@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, Router } from 'express';
-import { retData } from '../api/retData';
+import { retData } from '../api/util';
 import { getMD5Password } from '../api/util';
 import { UserDao } from '../models2/User';
 import chalk from 'chalk';

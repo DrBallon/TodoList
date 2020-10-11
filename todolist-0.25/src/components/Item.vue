@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Item as ItemInterface } from '@/store/IFs';
 import { PropType } from 'vue';
 import { dispatchChangeGroup, dispatchEditContent } from '@/store';
@@ -80,9 +80,17 @@ export default class Item extends ItemProps {
       });
     }
   }
+  mounted() {
+    console.log(`item ${this.data.id} mounted`);
+  }
   created() {
     this.data = this.item;
     this.curGroup = this.item.group;
+  }
+  @Watch('group')
+  onGroupChange(newValue: ItemInterface) {
+    console.log('watch item');
+    this.data = newValue;
   }
 }
 </script>

@@ -17,7 +17,6 @@ export default {
   getGroups(state: State) {
     const groups = [{ id: -1, title: '未分组' }];
     state.groups.forEach((group) => {
-      if (group.id == 0 || group.id == 1) return;
       groups.push({
         id: group.id,
         title: group.title,
@@ -32,13 +31,6 @@ export default {
     if (state.curMode == 0) {
       const group1: List = { title: '正在进行', id: -1, list: [] };
       const group2: List = { title: '已完成', id: -1, list: [] };
-      state.groups.forEach((group) => {
-        if (group.id == 0) {
-          group1.title = group.title;
-        } else if (group.id == 1) {
-          group2.title = group.title;
-        }
-      });
       state.list.forEach((item) => {
         if (item.done) {
           group2.list.push(item);
@@ -55,14 +47,13 @@ export default {
     };
     const groupArr = [];
     state.groups.forEach((group) => {
-      if (group.id == 0 || group.id == 1) return;
       temp[group.id] = { id: group.id, title: group.title, list: [] };
     });
     state.list.forEach((item) => {
-      if (item.group == 0 || item.group == 1) {
-        temp[-1].list.push(item);
-      } else {
+      if (state.groups.some((group) => item.group == group.id)) {
         temp[item.group].list.push(item);
+      } else {
+        temp[-1].list.push(item);
       }
     });
     for (const key in temp) {

@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize';
+import { Sequelize, Model } from 'sequelize';
 
 class DB {
   sequelize: Sequelize;
@@ -22,4 +22,12 @@ class DB {
   }
 }
 const db = new DB();
-export default db;
+function toJson<T extends Model>(data: T | T[]): ModelType | ModelType[] {
+  if (Object.prototype.toString.call(data) === '[object Array]') {
+    return (data as T[]).map((model) => JSON.parse(JSON.stringify(model)));
+  } else {
+    return JSON.parse(JSON.stringify(data as T));
+  }
+}
+
+export { db, toJson };

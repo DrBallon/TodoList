@@ -6,7 +6,7 @@ import session from 'express-session';
 //依赖
 // import mongoose from 'mongoose';
 import path from 'path';
-import db from './models2/api';
+import { db } from './models2/api';
 //路由
 import accountRouter from './routers/account';
 import dataRouter from './routers/data';
@@ -21,9 +21,9 @@ app.use(express.static(path.join(__dirname, 'images')));
 db.connect()
   .then((val) => {
     console.log('数据库连接成功');
-    db.sequelize.sync({ force: true }).then(() => {
-      console.log('数据库结构生成成功');
-    });
+    // db.sequelize.sync({ force: true }).then(() => {
+    //   console.log('数据库结构生成成功');
+    // });
   })
   .catch((err) => {
     console.log('数据库连接失败:', err);

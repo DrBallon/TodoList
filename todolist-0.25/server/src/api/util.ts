@@ -34,3 +34,14 @@ export function toJson(data: Model | Model[]) {
     return JSON.parse(JSON.stringify(data));
   }
 }
+const retStatTypes = {
+  success: 200,
+  error: 500,
+};
+export function retData(status = 200, msg = '', data = {}) {
+  return {
+    status,
+    msg,
+    data,
+  };
+}

@@ -1,17 +1,13 @@
-/// <reference path="../main.d.ts" />
-/// <reference path="../condition.d.ts" />
 import { DataTypes } from 'sequelize';
-import db from './api';
-import chalk from 'chalk';
+import { db, toJson } from './api';
 
-import { toJson } from '../api/util';
 const User = db.sequelize.define(
   'User',
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     username: { type: DataTypes.STRING, allowNull: false },
     password: { type: DataTypes.STRING, allowNull: false },
-    curMode: { type: DataTypes.BOOLEAN, allowNull: true, defaultValue: 0 },
+    curMode: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 0 },
     avatar: { type: DataTypes.STRING, allowNull: true, defaultValue: '1.png' },
   },
   {
@@ -33,19 +29,19 @@ class UserDao {
 
   static findById = async (id: number) => {
     let ret = await User.findAll({ where: { id } });
-    return toJson(ret[0]);
+    return toJson(ret[0]) as QueryUser;
   };
   static findOne = async (condition: FindUser) => {
     let ret = await User.findAll({ where: condition });
     if (ret.length == 0) {
       return false;
     } else {
-      return toJson(ret[0]);
+      return toJson(ret[0]) as QueryUser;
     }
   };
   static setMode = async (id: number, mode: number) => {
     let ret = await User.update({ curMode: mode }, { where: { id } });
-    return ret[0];
+    return !!ret;
   };
 }
 export { UserDao };

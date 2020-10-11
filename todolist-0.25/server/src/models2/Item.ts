@@ -1,7 +1,5 @@
-import { User } from './../models/User';
-import { DataTypes, Model } from 'sequelize';
-import db from './api';
-import { toJson } from '../api/util';
+import { DataTypes } from 'sequelize';
+import { db, toJson } from './api';
 const Item = db.sequelize.define(
   'Item',
   {
@@ -18,36 +16,42 @@ const Item = db.sequelize.define(
 );
 
 class ItemDao {
-  static resetGroup = (userId: number, groupId: number) => {
-    return Item.update({ group: -1 }, { where: { user_id: userId, group: groupId } });
+  static resetGroup = async (userId: number, groupId: number) => {
+    let ret = await Item.update({ group: -1 }, { where: { user_id: userId, group: groupId } });
+    return ret[0] == 0 ? null : (toJson(ret[1]) as QueryItem[]);
   };
   static findById = async (id: number) => {
     let ret = await Item.findAll({ where: { id } });
-    return toJson(ret);
+    return toJson(ret) as QueryUser[];
   };
   static state = async (id: number, state: boolean) => {
-    return await Item.update({ done: state }, { where: { id } });
+    let ret = await Item.update({ done: state }, { where: { id } });
+    return ret[0] == 0 ? false : true;
   };
   static group = async (id: number, group: number) => {
-    return await Item.update({ group }, { where: { id } });
+    let ret = await Item.update({ group }, { where: { id } });
+    return ret[0] == 0 ? false : true;
   };
 
   static content = async (id: number, content: string) => {
-    return await Item.update({ content }, { where: { id } });
+    let ret = await Item.update({ content }, { where: { id } });
+    return ret[0] == 0 ? false : true;
   };
   static del = async (id: number) => {
-    return await Item.destroy({ where: { id } });
+    let ret = await Item.destroy({ where: { id } });
+    return !!ret;
   };
   static findByUserId = async (userId: number) => {
     let ret = await Item.findAll({ where: { user_id: userId } });
-    return toJson(ret);
+    return toJson(ret) as QueryItem[];
   };
   static add = async (userId: number, content: string) => {
     let ret = await Item.create({ content, user_id: userId });
-    return toJson(ret);
+    return toJson(ret) as QueryUser;
   };
   static clear = async (userId: number) => {
-    return await Item.destroy({ where: { user_id: userId } });
+    let ret = await Item.destroy({ where: { user_id: userId } });
+    return !!ret;
   };
 }
 export { ItemDao };
