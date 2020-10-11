@@ -1,11 +1,13 @@
 <template>
   <div id="app">
-    <Title :avatar="avatar"></Title>
+    <Title :avatar="avatar">
+      <Panel2 @close="closePanel" :avatar="avatar" />
+    </Title>
     <Content></Content>
     <Tools></Tools>
-    <transition name="fade">
+    <!-- <transition name="fade">
       <Panel v-if="showPanel" @close="closePanel"></Panel>
-    </transition>
+    </transition> -->
   </div>
 </template>
 <script lang="ts">
@@ -14,6 +16,7 @@ import Title from '@/components/Title.vue';
 import Content from '@/components/Content.vue';
 import Tools from '@/components/Tools.vue';
 import Panel from '@/components/Panel.vue';
+import Panel2 from '@/components/Panel2.vue';
 import http from '@/store/api';
 @Component({
   components: {
@@ -21,6 +24,7 @@ import http from '@/store/api';
     Title,
     Content,
     Panel,
+    Panel2,
   },
 })
 export default class App extends Vue {
@@ -47,9 +51,9 @@ export default class App extends Vue {
       this.avatar = '';
     }
   }
-  get showPanel() {
-    return this.$store.getters.panelConfig.showPanel;
-  }
+  // get showPanel() {
+  //   return this.$store.getters.panelConfig.showPanel;
+  // }
   getData() {
     http.getData().then((res) => {
       if (res.status == 200) {

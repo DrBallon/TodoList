@@ -8,9 +8,11 @@
         </el-input>
       </el-col>
       <el-col :xs="{ span: 2, offset: 1 }" :sm="2">
-        <el-avatar :src="avatar" class="avatar" @click.native="openPanel">
-          <img src="@/assets/images/default.png" />
-        </el-avatar>
+        <slot>
+          <!-- <el-avatar :src="avatar" class="avatar" @click.native="openPanel">
+            <img src="@/assets/images/default.png" /> </el-avatar
+        > -->
+        </slot>
       </el-col>
     </el-row>
   </div>
@@ -49,6 +51,7 @@ export default class Title extends TitleProps {
     margin: 0 auto;
     width: $inner-width;
     font-size: 0;
+    z-index: 99;
     .avatar {
       width: 4rem;
       height: 4rem;
@@ -71,6 +74,7 @@ export default class Title extends TitleProps {
     .center {
       width: 100%;
       font-size: 0;
+      z-index: 99;
       h1 {
         text-align: center;
         margin: 0;

@@ -22,7 +22,7 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
     const user = await UserDao.findOne({ username, password: getMD5Password(password) });
     if (user) {
       req.session && (req.session[username] = { username, id: user['id'] });
-      res.cookie('username', username, { maxAge: 60 * 1000, httpOnly: true });
+      res.cookie('username', username, { maxAge: 60 * 60 * 1000, httpOnly: true });
       res.send(retData(200, '登陆成功'));
     } else {
       res.send(retData(500, '密码不对'));

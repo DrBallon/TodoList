@@ -80,9 +80,6 @@ export default class Item extends ItemProps {
       });
     }
   }
-  mounted() {
-    console.log(`item ${this.data.id} mounted`);
-  }
   created() {
     this.data = this.item;
     this.curGroup = this.item.group;
@@ -104,6 +101,7 @@ export default class Item extends ItemProps {
   vertical-align: middle;
   margin: 1rem;
   user-select: none;
+  z-index: 10;
   .item-state {
     width: 4rem;
     height: 4rem;
