@@ -1,6 +1,6 @@
 /// <reference path="../main.d.ts" />
 /// <reference path="../condition.d.ts" />
-import { DataTypes, WhereOptions } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import db from './api';
 import chalk from 'chalk';
 
@@ -15,7 +15,7 @@ const User = db.sequelize.define(
     avatar: { type: DataTypes.STRING, allowNull: true, defaultValue: '1.png' },
   },
   {
-    tableName: 'users',
+    // tableName: 'users',
     timestamps: false,
   }
 );

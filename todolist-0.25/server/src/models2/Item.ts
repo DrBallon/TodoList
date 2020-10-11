@@ -1,3 +1,4 @@
+import { User } from './../models/User';
 import { DataTypes, Model } from 'sequelize';
 import db from './api';
 import { toJson } from '../api/util';
