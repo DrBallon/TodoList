@@ -12,3 +12,6 @@ export const CHANGE_MODE = 'CHANGE_MODE';
 export const SET_DATA = 'SET_DATA';
 
 export const CLEAR_ITEM = 'CLEAR_ITEM';
+
+export const TOGGLE_PANEL = 'TOGGLE_PANEL';
+export const CHANGE_PANELTYPE = 'CHANGE_PANELTYPE';

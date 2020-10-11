@@ -1,11 +1,20 @@
 import { Commit, ActionTree } from 'vuex';
 import { State, ChangeGroup, EditContent, ChangeState } from './IFs';
 import http from './api';
+async function togglePanel(context: { commit: Commit }, show: boolean) {
+  context.commit('TOGGLE_PANEL', show);
+}
+async function changePanelType(context: { commit: Commit }, type: 0 | 1 | 2) {
+  context.commit('CHANGE_PANELTYPE', type);
+}
 async function setData(context: { commit: Commit }, payload: State) {
   payload = payload || {
     curMode: 0,
     groups: [],
     list: [],
+    avatar: '',
+    showPanel: true,
+    panelType: 0,
   };
   context.commit('SET_DATA', payload);
 }
@@ -94,5 +103,7 @@ const actions: ActionTree<State, State> = {
   delGroup,
   setData,
   clearItem,
+  togglePanel,
+  changePanelType,
 };
 export default actions;

@@ -14,6 +14,13 @@ function sortList(list: Item[]) {
   });
 }
 export default {
+  panelConfig(state: State) {
+    const { panelType, showPanel } = state;
+    return {
+      panelType,
+      showPanel,
+    };
+  },
   getGroups(state: State) {
     const groups = [{ id: -1, title: '未分组' }];
     state.groups.forEach((group) => {

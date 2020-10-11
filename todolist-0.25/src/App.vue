@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <Title @open="openPanel" :avatar="avatar"></Title>
+    <Title :avatar="avatar"></Title>
     <Content></Content>
     <Tools></Tools>
     <transition name="fade">
-      <Panel v-if="showPanel" @close="closePanel" :type="panelType"></Panel>
+      <Panel v-if="showPanel" @close="closePanel"></Panel>
     </transition>
   </div>
 </template>
@@ -24,8 +24,8 @@ import http from '@/store/api';
   },
 })
 export default class App extends Vue {
-  private showPanel = false;
-  private panelType = 0;
+  // private showPanel = false;
+  // private panelType = 0;
   private avatar = '';
   testItem = {
     id: 0,
@@ -38,30 +38,25 @@ export default class App extends Vue {
     //不设置type时，说明是单纯的关闭版面，只需要设置
     //type=0时，说明登录成功，此时重新获取getData
     //type=1时，说明退出成功，此时重新设置类型
-    this.showPanel = false;
     if (type == 0) {
       this.getData();
     } else if (type == 1) {
       this.$store.dispatch('setData');
-      this.panelType = 0;
-      this.showPanel = true;
+      // this.panelType = 0;
+      // this.showPanel = true;
       this.avatar = '';
     }
   }
-  openPanel() {
-    this.showPanel = true;
+  get showPanel() {
+    return this.$store.getters.panelConfig.showPanel;
   }
   getData() {
-    // this.$store.dispatch('setData');
     http.getData().then((res) => {
       if (res.status == 200) {
         const { curMode, groups, list, avatar } = res.data;
-        this.$store.dispatch('setData', { curMode, groups, list });
+        this.$store.dispatch('setData', { avatar, curMode, groups, list, showPanel: false, panelType: 1 });
         this.avatar = avatar;
-        this.showPanel = false;
-        this.panelType = 1;
       } else {
-        this.showPanel = true;
         this.avatar = '';
       }
     });

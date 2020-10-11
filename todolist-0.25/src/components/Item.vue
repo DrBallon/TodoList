@@ -89,7 +89,7 @@ export default class Item extends ItemProps {
   }
   @Watch('group')
   onGroupChange(newValue: ItemInterface) {
-    console.log('watch item');
+    // console.log('watch item');
     this.data = newValue;
   }
 }

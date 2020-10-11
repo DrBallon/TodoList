@@ -34,7 +34,7 @@ export default class Title extends TitleProps {
     this.content = '';
   }
   openPanel() {
-    this.$emit('open');
+    this.$store.dispatch('togglePanel', true);
   }
 }
 </script>

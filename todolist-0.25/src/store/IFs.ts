@@ -12,8 +12,17 @@ export interface State {
   curMode: number;
   groups: Group[];
   list: Item[];
+  avatar: string;
+  showPanel: boolean;
+  panelType: 0 | 1 | 2;
 }
 //actions payload
+
+export interface TogglePanel {
+  showPanel: boolean;
+  panelType: 0 | 1 | 2;
+}
+
 export interface ChangeGroup {
   itemId: number;
   newGroup: number;

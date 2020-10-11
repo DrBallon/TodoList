@@ -1,4 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
+import store from '.';
+// import store from './index';
 interface Params {
   id?: number;
   userId?: number;
@@ -12,26 +14,32 @@ interface From {
   username: string;
   password: string;
 }
-// 添加请求拦截器
-axios.interceptors.request.use(
-  function(config) {
-    console.log(config);
-    return config;
-  },
-  function(error) {
-    // 对请求错误做些什么
-    return Promise.reject(error);
-  }
-);
 
 // 添加
 class Http {
-  private instance = axios.create({
-    baseURL: '/api',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  private instance: AxiosInstance;
+  constructor() {
+    this.instance = axios.create({
+      baseURL: '/api',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    this.instance.interceptors.response.use(
+      (response) => {
+        if (response.data.msg == '未登录') {
+          //请求为未登录时，刷新页面
+          console.log('未登录');
+          store.dispatch('setData');
+        }
+        return response;
+      },
+      (error) => {
+        // 对请求错误做些什么
+        return Promise.reject(error);
+      }
+    );
+  }
   get(url: string, params?: Params | From) {
     return this.instance.get(url, { params });
   }

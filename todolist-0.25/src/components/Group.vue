@@ -15,7 +15,6 @@
     <el-collapse-transition>
       <ul v-show="showList">
         <Item v-for="item in groupData.list" :key="groupData.id * 10 + item.id" :item="item"></Item>
-        <!-- <Item v-for="item in groupData.list" :key="item.id" :item="item"></Item> -->
       </ul>
     </el-collapse-transition>
   </div>
@@ -55,15 +54,10 @@ export default class Group extends GroupProps {
   created() {
     this.groupData = this.group;
   }
-  mounted() {
-    console.log(`group ${this.groupData.id} mounted`);
-  }
   @Watch('group')
   onGroupChange(newValue: List) {
-    console.log(`watch group ${this.groupData.id} mounted`);
-    this.$nextTick(() => {
-      this.groupData = newValue;
-    });
+    // console.log(`watch group ${this.groupData.id} mounted`);
+    this.groupData = newValue;
   }
 }
 </script>

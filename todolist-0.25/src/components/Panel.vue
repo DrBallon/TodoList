@@ -1,7 +1,7 @@
 <template>
   <div class="background">
     <div class="panel">
-      <i class="close el-icon-close" @click="close" v-if="type != 0"></i>
+      <i class="close el-icon-close" @click="close" v-if="panelType != 0"></i>
       <!-- 登录 -->
       <el-form
         class="login"
@@ -60,18 +60,11 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import http from '@/store/api';
-const PanelProps = Vue.extend({
-  props: {
-    //0登录，1退出，2注册
-    type: Number,
-  },
-});
 @Component
-export default class Panel extends PanelProps {
-  private panelType = 0;
+export default class Panel extends Vue {
   private loginForm = {
     username: '',
     password: '',
@@ -117,20 +110,24 @@ export default class Panel extends PanelProps {
       },
     ],
   };
+  get panelType() {
+    return this.$store.getters.panelConfig.panelType || 0;
+  }
   close() {
+    this.$store.dispatch('togglePanel', false);
     this.$emit('close');
   }
   //0登录，1退出，2注册
   changePanelType(type: number) {
-    this.panelType = type;
+    this.$store.dispatch('changePanelType', type);
     if (type == 0) {
       this.$nextTick(() => {
-        (this.$refs['loginForm'] as Form).clearValidate();
+        // (this.$refs['loginForm'] as Form).clearValidate();
         (this.$refs['loginForm'] as Form).resetFields();
       });
     } else if (type == 2) {
       this.$nextTick(() => {
-        (this.$refs['regForm'] as Form).clearValidate();
+        // (this.$refs['regForm'] as Form).clearValidate();
         (this.$refs['regForm'] as Form).resetFields();
       });
     }
@@ -166,6 +163,7 @@ export default class Panel extends PanelProps {
       if (valid) {
         const submitRet = await http.login(this.loginForm);
         if (submitRet.status == 200) {
+          this.$store.dispatch('togglePanel', false);
           this.$emit('close', 0);
         } else {
           alert('登录失败');
@@ -175,13 +173,6 @@ export default class Panel extends PanelProps {
         return false;
       }
     });
-  }
-  created() {
-    this.panelType = this.type;
-  }
-  @Watch('type')
-  onChildChanged(newVal: number) {
-    this.panelType = newVal;
   }
 }
 </script>

@@ -1,11 +1,20 @@
 import * as type from './mutation_types';
-import { State, Item, ChangeGroup, EditContent, Group } from './IFs';
+import { State, Item, ChangeGroup, EditContent, Group, TogglePanel } from './IFs';
 const logFlag = true;
 export default {
+  [type.CHANGE_PANELTYPE](state: State, type: 0 | 1 | 2) {
+    state.panelType = type;
+  },
+  [type.TOGGLE_PANEL](state: State, show: boolean) {
+    state.showPanel = show;
+  },
   [type.SET_DATA](state: State, data: State) {
     state.curMode = data.curMode;
     state.groups = data.groups;
     state.list = data.list;
+    state.avatar = data.avatar;
+    state.showPanel = data.showPanel;
+    state.panelType = data.panelType;
   },
   [type.CLEAR_ITEM](state: State) {
     console.log('clear_item');
