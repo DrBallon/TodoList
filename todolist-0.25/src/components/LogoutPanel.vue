@@ -2,12 +2,14 @@
   <div class="logout">
     <el-row>
       <el-col :span="24">
-        <el-upload class="avatar-uploader" action="/api/avatar" :show-file-list="false" :http-request="upload">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-        </el-upload>
+        <el-tooltip class="item" effect="dark" content="点击修改头像" placement="top">
+          <el-upload class="avatar-uploader" action="/api/avatar" :show-file-list="false" :http-request="upload">
+            <img :src="tempPath || getAvatar" class="avatar" />
+          </el-upload>
+        </el-tooltip>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row v-if="tempName">
       <el-col :span="10">
         <el-button type="primary" @click="resetAvatar">还原</el-button>
       </el-col>
@@ -24,19 +26,17 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { HttpRequestOptions, ElUploadInternalFileDetail } from 'element-ui/types/upload';
+import { HttpRequestOptions /* ElUploadInternalFileDetail */ } from 'element-ui/types/upload';
 import http from '@/store/api';
-const LogoutPanelProps = Vue.extend({
-  props: {
-    avatar: String,
-  },
-});
 @Component({
   name: 'LogoutPanel',
 })
-export default class LogoutPanel extends LogoutPanelProps {
-  private imageUrl = this.avatar;
+export default class LogoutPanel extends Vue {
   private tempName = '';
+  private tempPath = '';
+  get getAvatar() {
+    return this.$store.getters.getAvatar;
+  }
   logout() {
     http.logout().then((res) => {
       if (res.status == 200) {
@@ -45,23 +45,13 @@ export default class LogoutPanel extends LogoutPanelProps {
     });
   }
   resetAvatar() {
-    // console.log('resetAvatar');
-    this.imageUrl = this.avatar;
+    this.tempName = '';
+    this.tempPath = '';
   }
   appyleAvatar() {
     if (this.tempName == '') return;
-    console.log(this.tempName);
-    http
-      .setAvatar(this.tempName)
-      .then((ret) => {
-        console.log(ret);
-        if (ret.status == 200) {
-          //
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.$store.dispatch('setAvatar', this.tempName);
+    this.tempName = '';
   }
   upload(req: HttpRequestOptions) {
     const formData = new FormData();
@@ -70,7 +60,8 @@ export default class LogoutPanel extends LogoutPanelProps {
       .post('/upload', formData)
       .then((ret) => {
         console.log(ret.data.data);
-        this.imageUrl = ret.data.data.src;
+        // this.imageUrl = ret.data.data.src;
+        this.tempPath = ret.data.data.src;
         this.tempName = ret.data.data.filename;
       })
       .catch((err) => {

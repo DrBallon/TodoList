@@ -1,5 +1,5 @@
 import * as type from './mutation_types';
-import { State, Item, ChangeGroup, EditContent, Group, TogglePanel } from './IFs';
+import { State, Item, ChangeGroup, EditContent, Group } from './IFs';
 const logFlag = true;
 export default {
   [type.CHANGE_PANELTYPE](state: State, type: 0 | 1 | 2) {
@@ -15,6 +15,9 @@ export default {
     state.avatar = data.avatar;
     state.showPanel = data.showPanel;
     state.panelType = data.panelType;
+  },
+  [type.SET_AVATAR](state: State, name: string) {
+    state.avatar = 'http://localhost:3000/' + name;
   },
   [type.CLEAR_ITEM](state: State) {
     console.log('clear_item');
@@ -69,7 +72,7 @@ export default {
     if (index == -1) return;
     state.groups.splice(index, 1);
     console.log(i++);
-    state.list.forEach((item, index) => {
+    state.list.forEach((item) => {
       if (item.group == groupId) {
         item.group = -1;
       }

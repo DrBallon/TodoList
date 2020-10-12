@@ -8,11 +8,7 @@
         </el-input>
       </el-col>
       <el-col :xs="{ span: 2, offset: 1 }" :sm="2">
-        <slot>
-          <!-- <el-avatar :src="avatar" class="avatar" @click.native="openPanel">
-            <img src="@/assets/images/default.png" /> </el-avatar
-        > -->
-        </slot>
+        <slot> </slot>
       </el-col>
     </el-row>
   </div>
@@ -20,16 +16,14 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-const TitleProps = Vue.extend({
-  props: {
-    avatar: String,
-  },
-});
 @Component({
   name: 'Title',
 })
-export default class Title extends TitleProps {
+export default class Title extends Vue {
   private content = '';
+  get getAvatar() {
+    return this.$store.getters.getAvatar;
+  }
   add() {
     if (this.content == '' || this.content.trim() == '') return;
     this.$store.dispatch('addItem', this.content);

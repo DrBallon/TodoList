@@ -19,7 +19,7 @@
   </el-form>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import http from '@/store/api';
 
@@ -32,7 +32,7 @@ export default class RegPanel extends Vue {
     password: '',
     password2: '',
   };
-  private validatePass2 = (rule: any, value: string, callback: (err?: Error) => void) => {
+  private validatePass2 = (rule: {}, value: string, callback: (err?: Error) => void) => {
     if (value === '') {
       callback(new Error('请再次输入密码'));
     } else if (value !== this.regForm.password) {

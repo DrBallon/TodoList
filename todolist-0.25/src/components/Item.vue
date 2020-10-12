@@ -163,6 +163,7 @@ export default class Item extends ItemProps {
     .el-checkbox__inner {
       width: 3rem;
       height: 3rem;
+      transition: none;
     }
     &.is-checked {
       .el-checkbox__inner::after {
@@ -170,6 +171,7 @@ export default class Item extends ItemProps {
         height: 2rem;
         left: 1rem;
         top: 0rem;
+        transition: none;
       }
     }
   }

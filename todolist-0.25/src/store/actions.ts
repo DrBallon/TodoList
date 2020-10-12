@@ -1,6 +1,7 @@
 import { Commit, ActionTree } from 'vuex';
 import { State, ChangeGroup, EditContent, ChangeState } from './IFs';
 import http from './api';
+import { Message } from 'element-ui';
 async function togglePanel(context: { commit: Commit }, show: boolean) {
   context.commit('TOGGLE_PANEL', show);
 }
@@ -17,6 +18,21 @@ async function setData(context: { commit: Commit }, payload: State) {
     panelType: 0,
   };
   context.commit('SET_DATA', payload);
+}
+async function setAvatar(context: { commit: Commit }, name: string) {
+  http
+    .setAvatar(name)
+    .then((ret) => {
+      if (ret.status == 200) {
+        // console.log('avatar设置成功');
+        Message.success('avatar设置成功');
+        context.commit('SET_AVATAR', name);
+      }
+    })
+    .catch((err) => {
+      Message.error('avatar设置失败');
+      console.log(err);
+    });
 }
 async function clearItem(context: { commit: Commit }) {
   context.commit('CLEAR_ITEM');
@@ -105,5 +121,6 @@ const actions: ActionTree<State, State> = {
   clearItem,
   togglePanel,
   changePanelType,
+  setAvatar,
 };
 export default actions;

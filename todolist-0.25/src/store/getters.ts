@@ -14,6 +14,9 @@ function sortList(list: Item[]) {
   });
 }
 export default {
+  getAvatar(state: State) {
+    return state.avatar;
+  },
   panelConfig(state: State) {
     const { panelType, showPanel } = state;
     return {

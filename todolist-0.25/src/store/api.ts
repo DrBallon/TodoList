@@ -105,7 +105,7 @@ class Http {
   }
   async setAvatar(tempFileName: string) {
     const data = await this.post('user/avatar', { name: tempFileName });
-    return data ? data.data.data : {};
+    return data ? data.data : {};
   }
 }
 const http = new Http();
