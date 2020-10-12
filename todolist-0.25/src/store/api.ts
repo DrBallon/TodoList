@@ -15,7 +15,13 @@ interface From {
   password: string;
 }
 
-// 添加
+function setToken(token: string) {
+  localStorage.setItem('token', token);
+}
+function getToken() {
+  return localStorage.getItem('token') || '';
+}
+
 class Http {
   private instance: AxiosInstance;
   constructor() {
@@ -28,11 +34,27 @@ class Http {
     this.instance.interceptors.response.use(
       (response) => {
         if (response.data.msg == '未登录') {
-          //请求为未登录时，刷新页面
+          //请求为未登录时，清空页面
           console.log('未登录');
           store.dispatch('setData');
         }
+        if (response.config.url == '/login' && response.data.status == 200) {
+          const { status, msg, token, data } = response.data;
+          console.log(token);
+          setToken(token);
+          response.data = { status, msg, data };
+        }
         return response;
+      },
+      (error) => {
+        // 对请求错误做些什么
+        return Promise.reject(error);
+      }
+    );
+    this.instance.interceptors.request.use(
+      (config) => {
+        config.headers['token'] = getToken();
+        return config;
       },
       (error) => {
         // 对请求错误做些什么

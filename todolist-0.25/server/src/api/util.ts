@@ -7,7 +7,6 @@ export function isLogged(req: Request, res: Response, next: NextFunction) {
   console.log('[method]:', req.method);
   if (getCookie(req, res) == getSession(req).username) {
     console.log('已登录');
-    // res.cookie('username', getSession(req).username, { maxAge: 60 * 1000, httpOnly: true });
     next();
   } else {
     res.send({

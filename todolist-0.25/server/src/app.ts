@@ -8,12 +8,12 @@ import session from 'express-session';
 import path from 'path';
 import { db } from './models2/api';
 import multer from 'multer';
+import Token from './api/token';
 //路由
-import accountRouter from './routers/account';
+import userRouter from './routers/user';
 import dataRouter from './routers/data';
 import groupRouter from './routers/group';
 import itemRouter from './routers/item';
-import userRouter from './routers/user';
 
 const app = express();
 //静态文件托管
@@ -56,7 +56,7 @@ app.use(
     rolling: true, //在每次请求时强行设置 cookie，这将重置 cookie 过期时间（默认：false）
   })
 );
-
+app.use(Token.auth);
 //设置允许跨域访问该服务.
 // app.all('', function(req, res, next) {
 //   res.header('Access-Control-Allow-Origin', '');
@@ -88,11 +88,10 @@ app.post('/upload', upload.single('file'), (req, res) => {
     },
   });
 });
-app.use(accountRouter);
+app.use(userRouter);
 app.use(dataRouter);
 app.use(groupRouter);
 app.use(itemRouter);
-app.use(userRouter);
 
 app.use((err) => {
   // console.log('[error]:', err);

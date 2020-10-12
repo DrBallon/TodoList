@@ -40,9 +40,16 @@ const GroupProps = Vue.extend({
 export default class Group extends GroupProps {
   private groupData: List = { id: -1, title: '', list: [] };
   private layout = {
-    title: { span: 22 },
-    del: { span: 2 },
-    toggle: { span: 2 },
+    xs: {
+      title: { span: this.curMode == 0 ? 22 : 20 },
+      del: { span: 2 },
+      fold: { span: 2 },
+    },
+    sm: {
+      title: { span: this.curMode == 0 ? 20 : 18 },
+      del: { span: 4 },
+      fold: { span: 4 },
+    },
   };
   private showList = true;
   get curMode() {
