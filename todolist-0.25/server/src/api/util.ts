@@ -1,5 +1,7 @@
 import crypto from 'crypto';
 import { Request, Response, NextFunction } from 'express';
+import fs from 'fs';
+import path from 'path';
 import { Model } from 'sequelize';
 export function isLogged(req: Request, res: Response, next: NextFunction) {
   console.log('[method]:', req.method);
@@ -33,6 +35,26 @@ export function toJson(data: Model | Model[]) {
   } else {
     return JSON.parse(JSON.stringify(data));
   }
+}
+export function copyFile(srcPath: string, tarPath: string, cb?: Function) {
+  if (!fs.existsSync(path.dirname(tarPath)))
+    fs.mkdir(path.dirname(tarPath), (err) => {
+      if (err) cb && cb(err);
+    });
+  const rs = fs.createReadStream(srcPath);
+  rs.on('error', (err) => {
+    if (err) {
+      cb && cb(err);
+    }
+  });
+  const ws = fs.createWriteStream(tarPath);
+  ws.on('error', (err) => {
+    if (err) {
+      cb && cb(err);
+    }
+  });
+  ws.on('close', () => cb && cb());
+  rs.pipe(ws);
 }
 const retStatTypes = {
   success: 200,

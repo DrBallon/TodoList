@@ -43,7 +43,7 @@ class Http {
   get(url: string, params?: Params | From) {
     return this.instance.get(url, { params });
   }
-  post(url: string, params?: Params | From) {
+  post(url: string, params?: Params | From | File | FormData | { name: string }) {
     return this.instance.post(url, params);
   }
   async getAvatar() {
@@ -101,6 +101,10 @@ class Http {
   }
   async delGroup(id: number) {
     const data = await this.post('group/del', { id });
+    return data ? data.data.data : {};
+  }
+  async setAvatar(tempFileName: string) {
+    const data = await this.post('user/avatar', { name: tempFileName });
     return data ? data.data.data : {};
   }
 }

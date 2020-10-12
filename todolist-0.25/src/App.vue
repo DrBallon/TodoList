@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Title :avatar="avatar">
-      <Panel2 @close="closePanel" :avatar="avatar" />
+      <Panel2 @close="closePanel" :avatar="avatar" :showPanel="showPanel" />
     </Title>
     <Content />
     <Tools />
@@ -25,7 +25,7 @@ import http from '@/store/api';
   },
 })
 export default class App extends Vue {
-  // private showPanel = false;
+  private showPanel = false;
   // private panelType = 0;
   private avatar = '';
   closePanel(type: number) {

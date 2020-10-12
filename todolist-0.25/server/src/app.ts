@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 //express 中间件
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -7,6 +7,7 @@ import session from 'express-session';
 // import mongoose from 'mongoose';
 import path from 'path';
 import { db } from './models2/api';
+import multer from 'multer';
 //路由
 import accountRouter from './routers/account';
 import dataRouter from './routers/data';
@@ -17,6 +18,7 @@ import userRouter from './routers/user';
 const app = express();
 //静态文件托管
 app.use(express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'temp')));
 
 db.connect()
   .then((val) => {
@@ -63,6 +65,29 @@ app.use(
 //   next();
 // });
 
+let upload = multer({
+  storage: multer.diskStorage({
+    destination: function(req: Request, file: Express.Multer.File, cb: Function) {
+      cb(null, path.resolve(__dirname, 'temp/'));
+    },
+    filename: function(req: Request, file: Express.Multer.File, cb: Function) {
+      let changedName = new Date().getTime() + '.' + file.originalname.split('.')[1];
+      cb(null, changedName);
+    },
+  }),
+});
+
+app.post('/upload', upload.single('file'), (req, res) => {
+  console.log(req.file);
+  res.json({
+    status: 200,
+    msg: '上传成功',
+    data: {
+      src: 'http://localhost:3000/' + req.file.filename,
+      filename: req.file.filename,
+    },
+  });
+});
 app.use(accountRouter);
 app.use(dataRouter);
 app.use(groupRouter);

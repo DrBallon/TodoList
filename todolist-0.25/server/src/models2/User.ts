@@ -43,5 +43,9 @@ class UserDao {
     let ret = await User.update({ curMode: mode }, { where: { id } });
     return !!ret;
   };
+  static setAvatar = async (id: number, avatar: string) => {
+    let ret = await User.update({ avatar }, { where: { id } });
+    return !!ret;
+  };
 }
 export { UserDao };
