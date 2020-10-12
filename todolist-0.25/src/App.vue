@@ -3,11 +3,8 @@
     <Title :avatar="avatar">
       <Panel2 @close="closePanel" :avatar="avatar" />
     </Title>
-    <Content></Content>
-    <Tools></Tools>
-    <!-- <transition name="fade">
-      <Panel v-if="showPanel" @close="closePanel"></Panel>
-    </transition> -->
+    <Content />
+    <Tools />
   </div>
 </template>
 <script lang="ts">
@@ -31,29 +28,16 @@ export default class App extends Vue {
   // private showPanel = false;
   // private panelType = 0;
   private avatar = '';
-  testItem = {
-    id: 0,
-    group: 0,
-    content: 0,
-    done: false,
-  };
-  closePanel(type?: number) {
-    //panel关闭时，根据panel的类型决定功能
-    //不设置type时，说明是单纯的关闭版面，只需要设置
+  closePanel(type: number) {
     //type=0时，说明登录成功，此时重新获取getData
-    //type=1时，说明退出成功，此时重新设置类型
+    //type=1时，说明退出成功，此时清空数据
     if (type == 0) {
       this.getData();
     } else if (type == 1) {
       this.$store.dispatch('setData');
-      // this.panelType = 0;
-      // this.showPanel = true;
       this.avatar = '';
     }
   }
-  // get showPanel() {
-  //   return this.$store.getters.panelConfig.showPanel;
-  // }
   getData() {
     http.getData().then((res) => {
       if (res.status == 200) {
