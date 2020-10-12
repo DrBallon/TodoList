@@ -60,5 +60,21 @@ export default class LoginPanel extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped></style>
-<style lang="scss"></style>
+<style lang="scss">
+.login {
+  .el-form-item {
+    margin-bottom: 2rem;
+    .el-form-item__label {
+      line-height: 3rem;
+      font-size: 1.5rem;
+      padding: 0;
+    }
+    button {
+      width: 48%;
+      &:nth-child(2) {
+        margin-left: 4%;
+      }
+    }
+  }
+}
+</style>

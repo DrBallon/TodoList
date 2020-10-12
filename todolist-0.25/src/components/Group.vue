@@ -1,13 +1,16 @@
 <template>
   <div class="group">
     <el-row>
-      <el-col :span="curMode == 0 ? 22 : 20">
+      <el-col :xs="curMode == 0 ? 21 : 18" :sm="curMode == 0 ? 22 : 20">
         <h2>{{ groupData.title }}</h2>
       </el-col>
-      <el-col :span="2" v-if="curMode == 1 && group.id != -1">
+      <el-col :xs="3" :sm="2" v-if="curMode == 1 && group.id != -1">
         <el-button type="danger" icon="el-icon-minus" @click="del" circle></el-button>
       </el-col>
-      <el-col :span="2" :offset="group.id == -1 && curMode == 1 ? 2 : 0">
+      <el-col
+        :xs="{ span: 3, offset: ((curMode == 1 && group.id) || curMode == 0) == -1 ? 3 : 0 }"
+        :sm="{ span: 2, offset: ((curMode == 1 && group.id) || curMode == 0) == -1 ? 2 : 0 }"
+      >
         <el-button type="danger" v-if="showList" icon="el-icon-arrow-down" @click="showList = false" circle></el-button>
         <el-button type="danger" v-else icon="el-icon-arrow-up" @click="showList = true" circle></el-button>
       </el-col>
@@ -40,20 +43,28 @@ const GroupProps = Vue.extend({
 export default class Group extends GroupProps {
   private groupData: List = { id: -1, title: '', list: [] };
   private layout = {
-    xs: {
-      title: { span: this.curMode == 0 ? 22 : 20 },
-      del: { span: 2 },
-      fold: { span: 2 },
-    },
+    //>768px
     sm: {
-      title: { span: this.curMode == 0 ? 20 : 18 },
-      del: { span: 4 },
-      fold: { span: 4 },
+      title: { span: 0 },
+      del: { span: 2 },
+      fold: { span: 2, offset: 0 },
+    },
+    xs: {
+      title: { span: 0 },
+      del: { span: 3 },
+      fold: { span: 3, offset: 0 },
     },
   };
   private showList = true;
+  /*
+  offset = 2
+  curMode=1&&group.id==-1
+  curMode=0
+*/
   get curMode() {
-    return this.$store.getters.getCurMode || 0;
+    const mode = this.$store.getters.getCurMode || 0;
+
+    return mode;
   }
   del() {
     this.$store.dispatch('delGroup', this.groupData.id);
@@ -61,6 +72,7 @@ export default class Group extends GroupProps {
   created() {
     this.groupData = this.group;
   }
+
   @Watch('group')
   onGroupChange(newValue: List) {
     // console.log(`watch group ${this.groupData.id} mounted`);

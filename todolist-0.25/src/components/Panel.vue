@@ -68,10 +68,12 @@ export default class Panel extends Vue {
     }
     // console.log(getPos(el));
     const pos = getPos(el);
+    console.log(pos);
     const targetLeft = window.innerWidth / 2;
     const radius = parseInt(getComputedStyle(document.body, null).fontSize) * 2;
     // console.log('radius:', radius);
     const targetTop = (radius / 2) * (6 + 19.5);
+    console.log(targetTop, targetLeft);
     el.style.top = pos.top + 'px';
     el.style.left = pos.left + 'px';
     el.style.transform = `translate(${targetLeft - pos.left - radius + 'px'},${targetTop -
@@ -145,27 +147,6 @@ export default class Panel extends Vue {
   .background {
     .panel {
       width: 100%;
-    }
-  }
-}
-</style>
-<style lang="scss">
-.panel {
-  .login,
-  .register {
-    .el-form-item {
-      margin-bottom: 2rem;
-      .el-form-item__label {
-        line-height: 3rem;
-        font-size: 1.5rem;
-        padding: 0;
-      }
-      button {
-        width: 48%;
-        &:nth-child(2) {
-          margin-left: 4%;
-        }
-      }
     }
   }
 }
