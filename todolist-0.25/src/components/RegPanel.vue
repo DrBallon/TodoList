@@ -78,6 +78,14 @@ export default class RegPanel extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+@import '~assets/styles/base';
+.register {
+  @extend .panel;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>
 <style lang="scss">
 .register {
   .el-form-item {

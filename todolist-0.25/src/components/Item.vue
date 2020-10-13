@@ -120,7 +120,7 @@ export default class Item extends ItemProps {
     float: left;
     //超过范围省略号
     &.mode1 {
-      width: 25rem;
+      width: 20rem;
     }
   }
   .item-input:focus {
@@ -145,12 +145,12 @@ export default class Item extends ItemProps {
   height: 3rem;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
   .item {
     .item-input {
-      width: 20rem;
+      width: 18rem;
       &.mode1 {
-        width: 12rem;
+        width: 10rem;
       }
     }
   }

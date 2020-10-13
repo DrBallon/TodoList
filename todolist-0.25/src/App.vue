@@ -83,7 +83,7 @@ export default class App extends Vue {
 }
 html {
   overflow: hidden;
-  font-size: 12px;
+  font-size: 14px;
   height: 100%;
 }
 body {
@@ -118,10 +118,10 @@ li {
   position: relative;
   height: 100%;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
   html {
     overflow: hidden;
-    font-size: 10px;
+    font-size: 12px;
     height: 100%;
   }
 }

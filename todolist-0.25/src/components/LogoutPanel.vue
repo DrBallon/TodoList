@@ -1,7 +1,8 @@
 <template>
   <div class="logout">
+    <i class="close el-icon-close" @click="close"></i>
     <el-row>
-      <el-col :span="24">
+      <el-col :span="24" class="avatar">
         <el-tooltip class="item" effect="dark" content="点击修改头像" placement="top">
           <el-upload class="avatar-uploader" action="/api/avatar" :show-file-list="false" :http-request="upload">
             <img :src="tempPath || getAvatar" class="avatar" />
@@ -37,6 +38,9 @@ export default class LogoutPanel extends Vue {
   get getAvatar() {
     return this.$store.getters.getAvatar;
   }
+  close() {
+    this.$store.dispatch('togglePanel', false);
+  }
   logout() {
     http.logout().then((res) => {
       if (res.status == 200) {
@@ -70,37 +74,33 @@ export default class LogoutPanel extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+@import '~assets/styles/base';
+.logout {
+  @extend .panel;
+  top: 15rem;
+  .close {
+    font-size: 3rem;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+  .avatar {
+    height: 12rem;
+    border-radius: 50%;
+    text-align: center;
+  }
+}
+</style>
 <style lang="scss">
 .logout {
   .el-row {
     padding: 0 10rem;
-    &:nth-child(1) {
-      height: 12rem;
-    }
     .el-col {
-      text-align: center;
       button {
         width: 100%;
         &:nth-child(1) {
           margin-top: 1rem;
-        }
-      }
-      .avatar-uploader {
-        height: 12rem;
-        .el-upload {
-          border-radius: 50%;
-          cursor: pointer;
-          position: relative;
-          overflow: hidden;
-        }
-        .avatar {
-          width: 12rem;
-          height: 12rem;
-          display: block;
-          transition: all 0.2s;
-          &:hover {
-            transform: scale(1.1);
-          }
         }
       }
     }

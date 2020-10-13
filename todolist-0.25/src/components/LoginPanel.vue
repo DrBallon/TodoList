@@ -60,6 +60,14 @@ export default class LoginPanel extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+@import '~assets/styles/base';
+.login {
+  @extend .panel;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>
 <style lang="scss">
 .login {
   .el-form-item {
