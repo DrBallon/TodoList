@@ -10,7 +10,7 @@
     </div>
     <div class="outer" ref="outer">
       <div class="inner" ref="inner">
-        <Group v-for="(group, index) in groups" :key="index" :group="group"></Group>
+        <Group v-for="(group, index) in groups" :key="index" :group="group" @refresh="scrollFresh"></Group>
       </div>
     </div>
   </div>
@@ -51,21 +51,29 @@ export default class Content extends Vue {
   get groups() {
     return this.$store.getters.groups;
   }
+  scrollFresh(delay: number) {
+    setTimeout(() => {
+      console.log('refresh');
+      this.scroll && this.scroll.refresh();
+    }, delay);
+  }
   mounted() {
     this.scroll = new BScroll(this.$refs.outer as HTMLElement, {
       click: true,
     });
     this.setContentHeight();
+    this.scroll && this.scroll.refresh();
   }
   @Watch('groups')
   onGroupsChangeds() {
-    this.$nextTick(() => {
-      this.setContentHeight();
-      this.scroll && this.scroll.destroy();
-      this.scroll = new BScroll(this.$refs.outer as HTMLElement, {
-        click: true,
-      });
-    });
+    this.scroll && this.scroll.refresh();
+    // this.$nextTick(() => {
+    //   this.setContentHeight();
+    //   this.scroll && this.scroll.destroy();
+    //   this.scroll = new BScroll(this.$refs.outer as HTMLElement, {
+    //     click: true,
+    //   });
+    // });
   }
 }
 </script>

@@ -2,25 +2,25 @@
   <div class="group">
     <el-row>
       <!-- <el-col :xs="curMode == 0 ? 21 : 18" :sm="curMode == 0 ? 22 : 20"> -->
-      <el-col :span="curMode == 0 ? 21 : 18">
+      <el-col :span="curMode == 0 ? 20 : 16">
         <h2>{{ groupData.title }}</h2>
       </el-col>
       <!-- <el-col :xs="3" :sm="2" v-if="curMode == 1 && group.id != -1"> -->
-      <el-col :span="3" v-if="curMode == 1 && group.id != -1">
+      <el-col :span="4" v-if="curMode == 1 && group.id != -1">
         <el-button type="danger" icon="el-icon-minus" @click="del" circle></el-button>
       </el-col>
       <!-- <el-col
         :xs="{ span: 3, offset: ((curMode == 1 && group.id) || curMode == 0) == -1 ? 3 : 0 }"
         :sm="{ span: 2, offset: ((curMode == 1 && group.id) || curMode == 0) == -1 ? 2 : 0 }"
       > -->
-      <el-col :span="3" :offset="((curMode == 1 && group.id) || curMode == 0) == -1 ? 3 : 0">
+      <el-col :span="4" :offset="((curMode == 1 && group.id) || curMode == 0) == -1 ? 4 : 0">
         <el-button type="danger" v-if="showList" icon="el-icon-arrow-down" @click="showList = false" circle></el-button>
         <el-button type="danger" v-else icon="el-icon-arrow-up" @click="showList = true" circle></el-button>
       </el-col>
     </el-row>
     <el-collapse-transition>
       <ul v-show="showList">
-        <Item v-for="item in groupData.list" :key="groupData.id * 10 + item.id" :item="item"></Item>
+        <Item @refresh="refresh" v-for="item in groupData.list" :key="groupData.id * 10 + item.id" :item="item"></Item>
       </ul>
     </el-collapse-transition>
   </div>
@@ -64,6 +64,10 @@ export default class Group extends GroupProps {
   curMode=1&&group.id==-1
   curMode=0
 */
+  refresh(delay: number) {
+    // console.log('rfresh');
+    this.$emit('refresh', delay);
+  }
   get curMode() {
     const mode = this.$store.getters.getCurMode || 0;
 

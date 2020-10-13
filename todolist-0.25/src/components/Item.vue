@@ -1,21 +1,55 @@
 <template>
   <li class="item">
-    <!-- <input type="checkbox" class="item-state" :checked="item.done" @click="state()" /> -->
-
-    <el-checkbox class="item-state" v-model="item.done" @click.native="state($event.target.tagName)"></el-checkbox>
-    <!-- <input ype="text" class="item-input" @click="startEdit()" @blur="endEdit()" v-model="data.content" /> -->
-    <el-input
-      v-model="data.content"
-      class="item-input"
-      :class="{ mode1: curMode == 1 }"
-      @click.native="startEdit()"
-      @blur="endEdit()"
-      placeholder="请输入内容"
-    ></el-input>
-    <i class="del-btn el-icon-delete" @click="del()"></i>
-    <el-select class="select" v-model="curGroup" placeholder="请选择" @change="changeGroup" v-if="curMode == 1">
-      <el-option v-for="(group, index) in getGroups" :key="index" :label="group.title" :value="group.id"> </el-option>
-    </el-select>
+    <el-row class="row" type="flex" justify="space-around">
+      <el-col :span="3" class="col hidden-xs-only">
+        <el-checkbox class="item-state" v-model="item.done" @click.native="state($event.target.tagName)" />
+      </el-col>
+      <el-col :sm="curMode == 0 ? 18 : 13" :xs="24" class="col">
+        <el-input
+          v-model="data.content"
+          class="item-input"
+          :class="{ mode1: curMode == 1 }"
+          @click.native="startEdit()"
+          @blur="endEdit()"
+          placeholder="请输入内容"
+        />
+      </el-col>
+      <el-col v-if="curMode == 1" :span="5" class="col hidden-xs-only">
+        <el-select class="select" v-model="curGroup" placeholder="请选择" @change="changeGroup">
+          <el-option v-for="(group, index) in getGroups" :key="index" :label="group.title" :value="group.id" />
+        </el-select>
+      </el-col>
+      <el-col :span="2" class="col  hidden-xs-only">
+        <i class="del el-icon-delete" @click="del()" />
+      </el-col>
+      <!-- 切换 -->
+      <el-col v-if="!showOpts" :xs="4" class="col hidden-sm-and-up">
+        <i class="del el-icon-caret-bottom" @click="toggleOpts(true)" />
+      </el-col>
+    </el-row>
+    <!-- 操作栏 768px以上隐藏 -->
+    <transition name="slide-fade" v-on:after-enter="afterEnter" v-on:after-leave="afterLeave">
+      <el-row v-if="showOpts" class="row hidden-sm-only" type="flex" justify="space-around">
+        <!-- 状态 -->
+        <el-col :xs="curMode == 0 ? 12 : 5" class="col hidden-sm-only">
+          <el-checkbox class="item-state" v-model="item.done" @click.native="state($event.target.tagName)" />
+        </el-col>
+        <!-- 分组 -->
+        <el-col :xs="14" v-if="curMode == 1" class="col hidden-sm-only">
+          <el-select class="select" v-model="curGroup" placeholder="请选择" @change="changeGroup">
+            <el-option v-for="(group, index) in getGroups" :key="index" :label="group.title" :value="group.id" />
+          </el-select>
+        </el-col>
+        <!-- 删除 -->
+        <el-col :xs="curMode == 0 ? 12 : 5" class="col  hidden-sm-only">
+          <i class="del el-icon-delete" @click="del()" />
+        </el-col>
+        <!-- 切换 -->
+        <el-col :xs="4" class="col hidden-sm-only">
+          <i class="del el-icon-caret-top" @click="toggleOpts(false)" />
+        </el-col>
+      </el-row>
+    </transition>
   </li>
 </template>
 
@@ -41,11 +75,22 @@ export default class Item extends ItemProps {
   };
   private tempContent = '';
   private curGroup = -1;
+  private showOpts = false;
   get curMode() {
     return this.$store.getters.getCurMode;
   }
   get getGroups() {
     return this.$store.getters.getGroups;
+  }
+  afterEnter() {
+    console.log('afterEnter');
+  }
+  afterLeave() {
+    console.log('afterLeave');
+  }
+  toggleOpts(flag: boolean) {
+    this.$emit('refresh', 0);
+    this.showOpts = flag;
   }
   changeGroup() {
     // this.$store.dispatch('changeGroup', { itemId: this.data.id, newGroup: this.curGroup });
@@ -92,99 +137,71 @@ export default class Item extends ItemProps {
 }
 </script>
 <style lang="scss" scoped>
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateX(2rem);
+  opacity: 0;
+}
 .item {
-  min-width: 300px;
-  height: 5rem;
-  line-height: 5rem;
   background-color: #fff;
   border-radius: 5px;
-  vertical-align: middle;
   margin: 1rem;
   user-select: none;
   z-index: 10;
-  .item-state {
-    width: 4rem;
-    height: 4rem;
-    margin-left: 1rem;
-    float: left;
+  &.done-item {
+    background-color: #dddddd;
   }
-  .item-input {
-    display: block;
-    font-size: 2rem;
-    line-height: 5rem;
-    height: 4rem;
-    width: 30rem;
-    box-sizing: border-box;
-    background-color: transparent;
-    border-radius: 0.5rem;
-    float: left;
-    //超过范围省略号
-    &.mode1 {
-      width: 20rem;
+  .row {
+    height: 5rem;
+    .col {
+      height: 5rem;
+      text-align: center;
+      .item-input {
+        margin-top: 0.5rem;
+        &:focus {
+          border: 1px solid black;
+        }
+      }
+      .select {
+        margin-top: 0.5rem;
+        width: 100%;
+      }
+      .del {
+        margin-top: 1rem;
+        font-size: 3rem;
+      }
     }
   }
-  .item-input:focus {
-    border: 1px solid black;
-  }
-  .select {
-    width: 9rem;
-    float: right;
-    margin-right: 1rem;
-  }
-}
-.done-item {
-  background-color: #dddddd;
-}
-.del-btn {
-  float: right;
-  // margin-right: 1rem;
-  margin: 1rem 1rem 0 0;
-  font-size: 3rem;
-  user-select: none;
-  width: 3rem;
-  height: 3rem;
-}
-
-@media screen and (max-width: 768px) {
-  .item {
-    .item-input {
-      width: 18rem;
-      &.mode1 {
-        width: 10rem;
-      }
+  @media screen and (max-width: 768px) {
+    .row {
+      height: 5rem;
     }
   }
 }
 </style>
 <style lang="scss">
-//checkbox样式覆盖
-.item-state {
-  .el-checkbox__input {
-    .el-checkbox__inner {
-      width: 3rem;
-      height: 3rem;
-      transition: none;
-    }
-    &.is-checked {
-      .el-checkbox__inner::after {
-        width: 1rem;
-        height: 2rem;
-        left: 1rem;
-        top: 0rem;
-        transition: none;
-      }
+.item {
+  input {
+    height: 4rem;
+  }
+  .select {
+    .el-input {
+      font-size: 1rem;
     }
   }
-}
-.item-input {
-  input {
-    border: none;
-    box-sizing: border-box;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    &:focus {
-      border: 1px solid #dcdfe6;
+  .el-checkbox__inner {
+    margin-top: 1rem;
+    width: 3rem;
+    height: 3rem;
+    &::after {
+      height: 2rem;
+      width: 1rem;
+      left: 0.8rem;
+      top: 0;
     }
   }
 }

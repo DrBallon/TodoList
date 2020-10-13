@@ -8,6 +8,7 @@ import { dispatchChangeGroup, dispatchEditContent } from './store';
 import './assets/icon/iconfont.css';
 import './assets/styles/reset.scss';
 import './assets/styles/base.scss';
+import 'element-ui/lib/theme-chalk/display.css';
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
