@@ -4,7 +4,7 @@ const resolve = (dir) => path.join(__dirname, dir);
 
 module.exports = {
   devServer: {
-    host: '192.168.31.104',
+    // host: '192.168.31.104',
     proxy: {
       '/api': {
         target: 'http://localhost:3000',

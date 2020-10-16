@@ -16,6 +16,12 @@ const Item = db.sequelize.define(
 );
 
 class ItemDao {
+  static update = async (id: number, values: { done?: boolean; content?: string; group?: number }) => {
+    let ret = await Item.update(values, { where: { id } });
+    if (ret[0] == 0) return null;
+    let item = await Item.findOne({ where: { id } });
+    return item ? toJson(item) : null;
+  };
   static resetGroup = async (userId: number, groupId: number) => {
     let ret = await Item.update({ group: -1 }, { where: { user_id: userId, group: groupId } });
     return ret[0] == 0 ? null : (toJson(ret[1]) as QueryItem[]);
@@ -47,7 +53,7 @@ class ItemDao {
   };
   static add = async (userId: number, content: string) => {
     let ret = await Item.create({ content, user_id: userId });
-    return toJson(ret) as QueryUser;
+    return toJson(ret) as QueryItem;
   };
   static clear = async (userId: number) => {
     let ret = await Item.destroy({ where: { user_id: userId } });

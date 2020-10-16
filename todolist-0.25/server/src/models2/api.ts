@@ -15,6 +15,7 @@ class DB {
         min: 0,
         idle: 30000,
       },
+      logging: false,
     });
   }
   connect() {

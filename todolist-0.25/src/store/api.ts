@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from 'axios';
-import store from '.';
 // import store from './index';
 interface Params {
   id?: number;
@@ -9,6 +8,7 @@ interface Params {
   title?: string;
   done?: boolean;
   group?: number;
+  limit?: number;
 }
 interface From {
   username: string;
@@ -33,17 +33,14 @@ class Http {
     });
     this.instance.interceptors.response.use(
       (response) => {
-        if (response.data.msg == '未登录') {
-          //请求为未登录时，清空页面
-          console.log('未登录');
-          store.dispatch('setData');
-        }
-        if (response.config.url == '/login' && response.data.status == 200) {
-          const { status, msg, token, data } = response.data;
-          console.log(token);
-          setToken(token);
-          response.data = { status, msg, data };
-        }
+        // console.log(response.data.token);
+        setToken(response.data.token || '');
+        const { status, msg, data } = response.data;
+        response.data = {
+          status,
+          msg,
+          data,
+        };
         return response;
       },
       (error) => {
@@ -53,6 +50,7 @@ class Http {
     );
     this.instance.interceptors.request.use(
       (config) => {
+        // console.log(getToken());
         config.headers['token'] = getToken();
         return config;
       },
@@ -68,28 +66,38 @@ class Http {
   post(url: string, params?: Params | From | File | FormData | { name: string }) {
     return this.instance.post(url, params);
   }
+  delete(url: string) {
+    return this.instance.delete(url);
+  }
+  put(url: string, params?: Params | From | File | FormData | { name: string }) {
+    return this.instance.put(url, params);
+  }
+  patch(url: string, params?: Params | From | File | FormData | { name: string }) {
+    return this.instance.patch(url, params);
+  }
+
   async getAvatar() {
     const ret = await this.get('/user/avatar');
     return ret ? ret.data : {};
   }
-  async login(form: From) {
-    const ret = await this.post('/login', form);
+  async register(form: From) {
+    const ret = await this.post('/user', form);
     return ret ? ret.data : {};
   }
-  async register(form: From) {
-    const ret = await this.post('/register', form);
+  async login(form: From) {
+    const ret = await this.post('/token', form);
     return ret ? ret.data : {};
   }
   async logout() {
-    const ret = await this.get('/logout');
+    const ret = await this.delete('/token');
     return ret ? ret.data : {};
   }
   async getData() {
-    const data = await this.get('/data');
+    const data = await this.get('/user/data');
     return data ? data.data : {};
   }
   async clearItem() {
-    const data = await this.post('/item/clear');
+    const data = await this.delete('/user/item');
     return data ? data.data.data : {};
   }
   async setMode(newMode: number) {
@@ -97,32 +105,26 @@ class Http {
     return data ? data.data.data : {};
   }
   async addItem(content: string) {
-    const data = await this.post('item/add', { content });
+    const data = await this.post('item', { content });
     return data ? data.data.data : {};
   }
   async delItem(id: number) {
-    const data = await this.post('item/del', { id });
+    const data = await this.delete('item/' + id);
     return data ? data.data.data : {};
   }
-  async changeState(id: number, newState: boolean) {
-    const data = await this.post('item/state', { id, done: newState });
-    // console.log('[changeState]:', data);
-    return data ? data.data.data : {};
-  }
-  async changeContent(id: number, content: string) {
-    const data = await this.post('item/content', { id, content });
-    return data ? data.data.data : {};
-  }
-  async changeGroup(id: number, newGroup: number) {
-    const data = await this.post('item/group', { id, group: newGroup });
+  async modifyItem(id: number, updateData: { done?: boolean; content?: string; group?: number }) {
+    if (JSON.stringify(updateData) == '{}') {
+      return { msg: '参数设置出错，全都是空' };
+    }
+    const data = await this.instance.patch(`/item/${id}`, JSON.parse(JSON.stringify(updateData)));
     return data ? data.data.data : {};
   }
   async addGroup(title: string) {
-    const data = await this.post('group/add', { title });
+    const data = await this.post('/group', { title });
     return data ? data.data.data : {};
   }
   async delGroup(id: number) {
-    const data = await this.post('group/del', { id });
+    const data = await this.delete('/group/' + id);
     return data ? data.data.data : {};
   }
   async setAvatar(tempFileName: string) {

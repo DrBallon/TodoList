@@ -54,7 +54,7 @@ async function changeState(context: { commit: Commit }, payload: ChangeState) {
   context.commit('CHANGE_STATE', payload.itemId);
   try {
     console.log(payload);
-    await http.changeState(payload.itemId, payload.newState);
+    await http.modifyItem(payload.itemId, { done: payload.newState });
   } catch (error) {
     console.log(error);
   }
@@ -62,7 +62,7 @@ async function changeState(context: { commit: Commit }, payload: ChangeState) {
 async function changeGroup(context: { commit: Commit }, payload: ChangeGroup) {
   context.commit('CHANGE_GROUP', payload);
   try {
-    await http.changeGroup(payload.itemId, payload.newGroup);
+    await http.modifyItem(payload.itemId, { group: payload.newGroup });
   } catch (error) {
     console.log(error);
   }
@@ -70,7 +70,7 @@ async function changeGroup(context: { commit: Commit }, payload: ChangeGroup) {
 async function editContent(context: { commit: Commit }, payload: EditContent) {
   context.commit('EDIT_CONTENT', payload);
   try {
-    await http.changeContent(payload.itemId, payload.newContent);
+    await http.modifyItem(payload.itemId, { content: payload.newContent });
   } catch (error) {
     console.log(error);
   }

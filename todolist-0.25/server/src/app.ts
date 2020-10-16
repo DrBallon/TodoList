@@ -40,6 +40,14 @@ db.connect()
 //     console.log('数据库连接失败:', err);
 //   });
 
+//设置允许跨域访问该服务.
+// app.all('', function(req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '');
+//   res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type');
+//   res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
+//   next();
+// });
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -56,14 +64,100 @@ app.use(
     rolling: true, //在每次请求时强行设置 cookie，这将重置 cookie 过期时间（默认：false）
   })
 );
-app.use(Token.auth);
-//设置允许跨域访问该服务.
-// app.all('', function(req, res, next) {
-//   res.header('Access-Control-Allow-Origin', '');
-//   res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type');
-//   res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
-//   next();
+// const zoos = [
+//   { title: 'aaa' },
+//   { title: 'bbb' },
+//   { title: 'ccc' },
+//   { title: 'ddd' },
+//   { title: 'eee' },
+//   { title: 'fff' },
+//   { title: 'ggg' },
+//   { title: 'hhh' },
+//   { title: 'iii' },
+//   { title: 'jjj' },
+//   { title: 'kkk' },
+// ];
+
+// app.patch('/zoos/:id', (req: Request, res: Response, next: NextFunction) => {
+//   // console.log(object);
+//   const id = (req.params.id as unknown) as number;
+//   const title = req.body.title;
+//   console.log('patch-patch-patch-patch-patch-patch-patch-patch-patch');
+//   res.send({
+//     status: 0,
+//     msg: 'id:' + req.params.id,
+//     data: {
+//       zoo: zoos[id],
+//     },
+//   });
 // });
+// app.put('/zoos/:id', (req: Request, res: Response, next: NextFunction) => {
+//   // console.log(object);
+//   const id = (req.params.id as unknown) as number;
+//   const title = req.body.title;
+//   console.log(title);
+//   res.send({
+//     status: 0,
+//     msg: 'id:' + req.params.id,
+//     data: {
+//       zoo: zoos[id],
+//     },
+//   });
+// });
+// app.delete('/zoos/:id', (req: Request, res: Response, next: NextFunction) => {
+//   // console.log(object);
+//   const id = (req.params.id as unknown) as number;
+//   console.log('删除:', zoos[id]);
+//   res.send({
+//     status: 0,
+//     msg: 'id:' + req.params.id,
+//     data: {
+//       zoo: zoos[id],
+//     },
+//   });
+// });
+// app.get('/zoos/:id', (req: Request, res: Response, next: NextFunction) => {
+//   // console.log(object);
+//   const id = (req.params.id as unknown) as number;
+//   res.send({
+//     status: 0,
+//     msg: 'id:' + req.params.id,
+//     data: {
+//       zoo: zoos[id],
+//     },
+//   });
+// });
+// app.get('/zoos', (req: Request, res: Response, next: NextFunction) => {
+//   // let { limit, offset, page, per_page, sortby, order } = req.params;
+//   const { limit } = req.query;
+//   console.log(limit);
+//   if (limit) {
+//     let limit2 = parseInt(limit as string);
+//     res.send({
+//       status: 0,
+//       msg: '',
+//       data: zoos.slice(0, limit2),
+//     });
+//   } else {
+//     res.send({
+//       status: 0,
+//       msg: '',
+//       data: {
+//         zoos,
+//       },
+//     });
+//   }
+// });
+// app.post('/zoos', (req: Request, res: Response, next: NextFunction) => {
+//   console.log(req.body.name);
+//   // console.log(object);
+//   res.send({
+//     status: 0,
+//     msg: '新建成功',
+//   });
+// });
+
+app.use(Token.auth);
 
 let upload = multer({
   storage: multer.diskStorage({

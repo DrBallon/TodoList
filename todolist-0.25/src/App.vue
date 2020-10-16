@@ -5,10 +5,10 @@
         <Title>
           <Panel @close="closePanel" />
         </Title>
-        <Content />
-        <Tools />
       </div>
     </transition>
+    <Content />
+    <Tools />
   </div>
 </template>
 <script lang="ts">

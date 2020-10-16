@@ -1,28 +1,30 @@
 <template>
   <div class="group">
     <el-row>
-      <!-- <el-col :xs="curMode == 0 ? 21 : 18" :sm="curMode == 0 ? 22 : 20"> -->
       <el-col :span="curMode == 0 ? 20 : 16">
         <h2>{{ groupData.title }}</h2>
       </el-col>
-      <!-- <el-col :xs="3" :sm="2" v-if="curMode == 1 && group.id != -1"> -->
-      <el-col :span="4" v-if="curMode == 1 && group.id != -1">
+      <el-col class="del" :span="4" v-if="curMode == 1 && group.id != -1">
         <el-button type="danger" icon="el-icon-minus" @click="del" circle></el-button>
       </el-col>
-      <!-- <el-col
-        :xs="{ span: 3, offset: ((curMode == 1 && group.id) || curMode == 0) == -1 ? 3 : 0 }"
-        :sm="{ span: 2, offset: ((curMode == 1 && group.id) || curMode == 0) == -1 ? 2 : 0 }"
-      > -->
-      <el-col :span="4" :offset="((curMode == 1 && group.id) || curMode == 0) == -1 ? 4 : 0">
-        <el-button type="danger" v-if="showList" icon="el-icon-arrow-down" @click="showList = false" circle></el-button>
-        <el-button type="danger" v-else icon="el-icon-arrow-up" @click="showList = true" circle></el-button>
+      <el-col class="toggle" :span="4" :offset="((curMode == 1 && group.id) || curMode == 0) == -1 ? 4 : 0">
+        <el-button
+          type="danger"
+          :icon="showList == false ? 'el-icon-arrow-down' : 'el-icon-arrow-up'"
+          @click="toggle"
+          circle
+        ></el-button>
       </el-col>
     </el-row>
-    <el-collapse-transition>
-      <ul v-show="showList">
-        <Item @refresh="refresh" v-for="item in groupData.list" :key="groupData.id * 10 + item.id" :item="item"></Item>
-      </ul>
-    </el-collapse-transition>
+    <transition-group name="slide" tag="ul">
+      <Item
+        @refresh="refresh"
+        v-show="showList"
+        v-for="item in groupData.list"
+        :key="groupData.id * 10 + item.id"
+        :item="item"
+      ></Item>
+    </transition-group>
   </div>
 </template>
 
@@ -68,6 +70,11 @@ export default class Group extends GroupProps {
     // console.log('rfresh');
     this.$emit('refresh', delay);
   }
+  toggle() {
+    console.log('toggle');
+    this.showList = !this.showList;
+    this.$emit('refresh', 600);
+  }
   get curMode() {
     const mode = this.$store.getters.getCurMode || 0;
 
@@ -88,6 +95,26 @@ export default class Group extends GroupProps {
 }
 </script>
 <style lang="scss" scoped>
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s;
+}
+.slide-enter,
+.slide-leave-to {
+  transform: translate(100%, 0);
+  // opacity: 0;
+}
+.slide-leave,
+.slide-enter-to {
+  // opacity: 1;
+  transform: translate(0, 0);
+}
+.group {
+  .del,
+  .toggle {
+    text-align: right;
+  }
+}
 /*
 .group {
   width: 600px;

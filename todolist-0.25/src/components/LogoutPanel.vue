@@ -1,14 +1,12 @@
 <template>
   <div class="logout">
     <i class="close el-icon-close" @click="close"></i>
-    <el-row>
-      <el-col :span="24" class="avatar">
-        <el-tooltip class="item" effect="dark" content="点击修改头像" placement="top">
-          <el-upload class="avatar-uploader" action="/api/avatar" :show-file-list="false" :http-request="upload">
-            <img :src="tempPath || getAvatar" class="avatar" />
-          </el-upload>
-        </el-tooltip>
-      </el-col>
+    <el-row type="flex" justify="center">
+      <el-tooltip class="tip" effect="dark" content="点击修改头像" placement="top">
+        <el-upload class="avatar-uploader" action="/api/avatar" :show-file-list="false" :http-request="upload">
+          <img :src="tempPath || getAvatar" class="avatar" />
+        </el-upload>
+      </el-tooltip>
     </el-row>
     <el-row v-if="tempName">
       <el-col :span="10">
@@ -87,8 +85,12 @@ export default class LogoutPanel extends Vue {
   }
   .avatar {
     height: 12rem;
+    width: 12rem;
     border-radius: 50%;
     text-align: center;
+    .tip {
+      width: 12rem;
+    }
   }
 }
 </style>

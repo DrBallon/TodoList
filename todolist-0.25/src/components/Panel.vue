@@ -101,7 +101,7 @@ export default class Panel extends Vue {
     this.showAvatar = false;
   }
   @Watch('show')
-  onShowChange(newValue: boolean) {
+  onShowChange() {
     // console.log('show change:', newValue);
   }
 }
@@ -115,10 +115,6 @@ export default class Panel extends Vue {
   font-size: 4rem;
   margin-top: 0.5rem;
   z-index: 99;
-  img {
-    width: 100%;
-    height: 100%;
-  }
 }
 .background {
   position: fixed;
@@ -128,5 +124,13 @@ export default class Panel extends Vue {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 10;
+}
+</style>
+<style lang="scss">
+.el-avatar {
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

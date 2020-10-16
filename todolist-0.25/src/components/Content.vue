@@ -10,7 +10,13 @@
     </div>
     <div class="outer" ref="outer">
       <div class="inner" ref="inner">
-        <Group v-for="(group, index) in groups" :key="index" :group="group" @refresh="scrollFresh"></Group>
+        <Group
+          class="group"
+          v-for="(group, index) in groups"
+          :key="index"
+          :group="group"
+          @refresh="scrollFresh"
+        ></Group>
       </div>
     </div>
   </div>
@@ -41,8 +47,8 @@ export default class Content extends Vue {
     const title: Element | null = document.querySelector('.title');
     const switchMode: Element | null = document.querySelector('.switch-mode');
     const height: number = window.innerHeight - getHeight(tools) - getHeight(title) - getHeight(switchMode);
-    // console.log('outer:', height);
-    // console.log('inner:', getHeight(this.$refs.inner as HTMLElement));
+    // console.log('height:', height);
+    console.log('inner:', getHeight(this.$refs.inner as HTMLElement));
     (this.$refs.outer as HTMLElement).style.height = height + 'px';
   }
   get curMode() {
@@ -54,6 +60,28 @@ export default class Content extends Vue {
   scrollFresh(delay: number) {
     setTimeout(() => {
       console.log('refresh');
+      this.setContentHeight();
+
+      // function getHeight(ele: Element | null) {
+      //   if (ele == null) return 0;
+      //   const height = window.getComputedStyle(ele).height;
+      //   return parseInt(height);
+      // }
+      // const groups = document.querySelectorAll('.group');
+      // // // console.log(groups);
+
+      // groups.forEach((group) => {
+      //   // console.log(getHeight(group));
+      //   // console.log(group);
+      //   const items = (group.querySelector('ul') as HTMLElement).children;
+      //   let arr = '';
+      //   [].forEach.call(items, (item) => {
+      //     // console.log(item);
+      //     arr += ' ' + getHeight(item);
+      //   });
+      //   console.log(arr);
+      // });
+
       this.scroll && this.scroll.refresh();
     }, delay);
   }
@@ -61,12 +89,11 @@ export default class Content extends Vue {
     this.scroll = new BScroll(this.$refs.outer as HTMLElement, {
       click: true,
     });
-    this.setContentHeight();
-    this.scroll && this.scroll.refresh();
+    this.scrollFresh(400);
   }
   @Watch('groups')
   onGroupsChangeds() {
-    this.scroll && this.scroll.refresh();
+    this.scrollFresh(600);
     // this.$nextTick(() => {
     //   this.setContentHeight();
     //   this.scroll && this.scroll.destroy();

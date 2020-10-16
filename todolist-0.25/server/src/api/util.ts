@@ -59,10 +59,19 @@ const retStatTypes = {
   success: 200,
   error: 500,
 };
-export function retData(status = 200, msg = '', data = {}) {
-  return {
-    status,
-    msg,
-    data,
-  };
+export function retData(req: Request, status = 200, msg = '', data = {}, token = '') {
+  if (req.body.token) {
+    return {
+      status,
+      msg,
+      token: req.body.token,
+      data,
+    };
+  } else {
+    return {
+      status,
+      msg,
+      data,
+    };
+  }
 }
