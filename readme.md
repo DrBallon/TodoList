@@ -8,4 +8,4 @@
 
 # 0.24 实现注册、登录功能。使用element-ui
 
-# 0.25 后端数据库从mongodb改为mysql
+# 0.25 后端数据库从mongodb改为mysql。修改为restful接口。校验修改为token。
